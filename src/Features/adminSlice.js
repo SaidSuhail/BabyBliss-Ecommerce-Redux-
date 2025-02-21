@@ -12,8 +12,6 @@ export const fetchProducts = createAsyncThunk("admin/fetchProducts", async () =>
       throw error;
     }
   });
-  git add .
-
   export const addProduct = createAsyncThunk("admin/addProduct", async (product) => {
     try {
       const url =
