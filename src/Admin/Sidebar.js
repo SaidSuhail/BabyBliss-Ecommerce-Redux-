@@ -2,6 +2,8 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../Features/adminSlice"; 
 import { useNavigate } from "react-router-dom";
+import 'react-notifications-component/dist/theme.css';
+import 'animate.css';
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -64,6 +66,11 @@ const Sidebar = () => {
             <li>
               <a href="/admin/product-section" className="hover:text-gray-400">
                 Product Section
+              </a>
+            </li>
+            <li>
+              <a href="/admin/order-management" className="hover:text-gray-400">
+                Order Management
               </a>
             </li>
           </ul>

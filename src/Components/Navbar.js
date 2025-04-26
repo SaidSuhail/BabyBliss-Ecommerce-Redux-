@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
+import {
+  FaShoppingCart,
+  FaBars,
+  FaTimes,
+  FaUserCircle,
+  FaHeart,
+} from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { setCart } from "../Features/userSlice";
+import { setCart, setWishlist } from "../Features/userSlice";
 
 function Navbar() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -14,41 +20,54 @@ function Navbar() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
-  const dispatch = useDispatch(); 
-  const cartItems = useSelector((state) => state.cart.cartItems); 
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   // Fetch login state and username from localStorage when the component mounts
   useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
     const storedUserName = localStorage.getItem("username");
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || []; 
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const storedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
     setIsLoggedIn(loggedIn);
     setUserName(storedUserName || "");
-    dispatch(setCart(storedCart)); 
-  }, [dispatch]);
+
+    if (loggedIn) {
+      dispatch(setCart(storedCart));
+      dispatch(setWishlist(storedWishlist));
+    } else {
+      dispatch(setCart([]));
+      dispatch(setWishlist([]));
+    }
+  }, [dispatch, isLoggedIn]);
 
   const toggleProfileMenu = () => {
     setIsProfileMenuOpen(!isProfileMenuOpen);
   };
 
   const handleLoginLogout = (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
 
     const confirmLogout = window.confirm("Are you sure you want to log out?");
     if (confirmLogout) {
       // Clear login state, user info, cart, and myOrders
-      navigate("/");
+
       localStorage.setItem("isLoggedIn", false);
       localStorage.removeItem("username");
       localStorage.removeItem("userid");
       localStorage.removeItem("myOrders");
       localStorage.removeItem("cart");
-      localStorage.removeItem("role"); 
+      localStorage.removeItem("role");
+      localStorage.removeItem("wishlist");
       // Clear cart state
       setIsLoggedIn(false);
       setUserName("");
-      dispatch(setCart([])); 
+
+      dispatch(setCart([]));
+      dispatch(setWishlist([]));
+
+      navigate("/");
       alert("Logged out successfully");
     }
   };
@@ -72,7 +91,7 @@ function Navbar() {
   };
 
   return (
-    <header className="bg-rose-600 text-white p-4 relative z-30">
+    <header className="bg-rose-600 text-white p-4  z-30 sticky top-0">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/">
           <h1 className="text-3xl font-extrabold">Baby Bliss</h1>
@@ -110,12 +129,6 @@ function Navbar() {
 
         {/* Hamburger menu and Cart Icon */}
         <div className="md:hidden flex items-center space-x-4">
-          <button
-            className="text-white text-2xl"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <FaTimes /> : <FaBars />}
-          </button>
           <Link to="/cart" onClick={() => setIsMenuOpen(false)}>
             <div className="relative">
               <FaShoppingCart className="h-5 w-5 text-white hover:text-pink-200" />
@@ -126,6 +139,17 @@ function Navbar() {
               )}
             </div>
           </Link>
+          <Link to="/wishlist" onClick={() => setIsMenuOpen(false)}>
+            <div className="relative">
+              <FaHeart className="h-5 w-5 text-white hover:text-pink-200" />
+            </div>
+          </Link>
+          <button
+            className="text-white text-2xl"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <FaTimes /> : <FaBars />}
+          </button>
         </div>
 
         {/* Navbar Links */}
@@ -194,6 +218,13 @@ function Navbar() {
                 )}
               </div>
             </Link>
+
+            <Link to="/wishlist" className="hidden md:block">
+              <div className="relative">
+                <FaHeart className="h-5 w-5 text-white hover:text-pink-200" />
+              </div>
+            </Link>
+
             <div className="absolute top-4 left-44 md:left-0 md:top-0 md:relative md:ml-6">
               <button
                 onClick={toggleProfileMenu}

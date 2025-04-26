@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { addItem } from "../Features/userSlice"; 
+import { addItem } from "../Features/userSlice";
+import {
+  addItemToWishlist,
+  removeItemFromWishlist,
+} from "../Features/userSlice";
 import { Link } from "react-router-dom";
-
+import { Heart } from "lucide-react";
+import { useSelector } from "react-redux";
 const Fashion = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  const dispatch = useDispatch(); 
+  const wishlist = useSelector((state) => state.cart?.wishlistItems || []);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axios
@@ -28,7 +33,7 @@ const Fashion = () => {
                   ? product.category.trim().toLowerCase()
                   : null
               )
-              .filter((category) => category) 
+              .filter((category) => category)
           )
         );
         setCategories(uniqueCategories);
@@ -51,9 +56,23 @@ const Fashion = () => {
     : products;
 
   const handleAddToCart = (product) => {
-    dispatch(addItem(product)); 
+    dispatch(addItem(product));
   };
-
+  const handleWishlistToggle = (product) => {
+    const isWishlisted = wishlist.some((item) => item.id === product.id);
+    if (isWishlisted) {
+      dispatch(removeItemFromWishlist(product.id));
+    } else {
+      dispatch(addItemToWishlist(product));
+    }
+  };
+  // const handleAddToWishlist = (product) => {
+  //   dispatch(addItemToWishlist(product)); // Dispatch to add to wishlist
+  // };
+  useEffect(() => {
+    // Save wishlist to localStorage whenever it changes
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  }, [wishlist]);
   if (loading) {
     return <p>Loading products...</p>;
   }
@@ -73,11 +92,13 @@ const Fashion = () => {
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="p-3 bg-white text-rose-600 border border-rose-400 rounded-full shadow-md focus:ring-2 focus:ring-rose-500 focus:outline-none transition duration-300">
+          className="p-3 bg-white text-rose-600 border border-rose-400 rounded-full shadow-md focus:ring-2 focus:ring-rose-500 focus:outline-none transition duration-300"
+        >
           <option value="">All Categories</option>
           {categories.map((category, index) => (
             <option key={index} value={category}>
-              {category.charAt(0).toUpperCase() + category.slice(1)} {/* Capitalize */}
+              {category.charAt(0).toUpperCase() + category.slice(1)}{" "}
+              {/* Capitalize */}
             </option>
           ))}
         </select>
@@ -107,11 +128,29 @@ const Fashion = () => {
                 </div>
               </div>
             </Link>
+
             <button
-              className="mt-4 w-full px-4 py-2 bg-rose-500 text-white rounded-full hover:bg-rose-600 transition duration-300"
-              onClick={() => handleAddToCart(product)} 
+              className="mt-5 w-44 px-4 py-2 bg-rose-500 text-white rounded-full hover:bg-rose-600 transition duration-300"
+              onClick={() => handleAddToCart(product)}
             >
               Add To Cart
+            </button>
+            <button
+              className={`absolute top-80 right-3 p-2 rounded-full shadow-md transition 
+    ${
+      wishlist.some((item) => item.id === product.id)
+        ? "bg-rose-500 text-white"
+        : "bg-white text-rose-500 hover:bg-rose-100"
+    }`}
+              onClick={() => handleWishlistToggle(product)}
+            >
+              <Heart
+                className={`transition duration-300 ${
+                  wishlist.some((item) => item.id === product.id)
+                    ? "fill-white"
+                    : "hover:fill-rose-500"
+                }`}
+              />
             </button>
           </div>
         ))}

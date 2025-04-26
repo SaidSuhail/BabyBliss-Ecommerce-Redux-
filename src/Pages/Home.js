@@ -3,14 +3,22 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { CarouselCustomNavigation } from "./CarouselCustomNavigation";
 import { useDispatch } from "react-redux";
-import { addItem } from "../Features/userSlice"; 
-
+import { addItem } from "../Features/userSlice";
+import { useSelector } from "react-redux";
+import {
+  addItemToWishlist,
+  removeItemFromWishlist,
+} from "../Features/userSlice";
+import { Heart } from "lucide-react";
+import Lottie from "lottie-react";
+import loadingAnimation from "../Assets/loadingAnimation.json";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState([]);
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
+  const wishlist = useSelector((state) => state.cart?.wishlistItems || []);
 
   useEffect(() => {
     // Fetch products and categories from the JSON server
@@ -29,16 +37,33 @@ const Home = () => {
         setLoading(false);
       });
   }, []);
-
+  const handleWishlistToggle = (product) => {
+    const isWishlisted = wishlist.some((item) => item.id === product.id);
+    if (isWishlisted) {
+      dispatch(removeItemFromWishlist(product.id));
+    } else {
+      dispatch(addItemToWishlist(product));
+    }
+  };
   // Filter products based on selected category
   const filteredProducts = selectedCategory
     ? products.filter((product) => product.category === selectedCategory)
     : products;
 
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Lottie
+          animationData={loadingAnimation}
+          loop={true}
+          className="w-64 h-64"
+        />
+      </div>
+    );
   }
-
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <CarouselCustomNavigation />
@@ -102,10 +127,27 @@ const Home = () => {
               </div>
             </Link>
             <button
-              className="mt-4 w-full px-4 py-2 bg-rose-600 text-white rounded-full hover:bg-rose-600 transition duration-300"
-              onClick={() => dispatch(addItem(product))} 
+              className="mt-5 w-44 px-4 py-2 bg-rose-600 text-white rounded-full hover:bg-rose-600 transition duration-300"
+              onClick={() => dispatch(addItem(product))}
             >
               Add To Cart
+            </button>
+            <button
+              className={`absolute top-80 right-3 p-2 rounded-full shadow-md transition 
+    ${
+      wishlist.some((item) => item.id === product.id)
+        ? "bg-rose-600 text-white"
+        : "bg-white text-rose-500 hover:bg-rose-100"
+    }`}
+              onClick={() => handleWishlistToggle(product)}
+            >
+              <Heart
+                className={`transition duration-300 ${
+                  wishlist.some((item) => item.id === product.id)
+                    ? "fill-white"
+                    : "hover:fill-rose-500"
+                }`}
+              />
             </button>
           </div>
         ))}

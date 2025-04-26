@@ -3,13 +3,16 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addItem } from "../Features/userSlice";
-
+import { useSelector } from "react-redux";
+import { addItemToWishlist,removeItemFromWishlist } from "../Features/userSlice";
+import { Heart } from "lucide-react";
 const ProductDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch(); 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); 
+  const wishlist = useSelector((state) => state.cart?.wishlistItems || []);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -30,6 +33,14 @@ const ProductDetail = () => {
 
     fetchProductDetails();
   }, [id]);
+  const handleWishlistToggle = () => {
+    const isWishlisted = wishlist.some(item => item.id === product.id);
+    if (isWishlisted) {
+      dispatch(removeItemFromWishlist(product.id));
+    } else {
+      dispatch(addItemToWishlist(product));
+    }
+  };
 
   if (loading) {
     return <div>Loading product details...</div>;
@@ -79,7 +90,7 @@ const ProductDetail = () => {
   
       {/* Right Side - Product Card (remaining width) */}
       <div className="flex justify-end">
-        <div className="max-w-md w-full bg-white rounded-xl shadow-md p-6 md:p-8 lg:p-10">
+        <div className="max-w-md w-full bg-white rounded-xl shadow-md p-6 md:p-8 lg:p-10 relative">
           {/* ... (keep previous product card content unchanged) ... */}
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
             {name}
@@ -103,7 +114,17 @@ const ProductDetail = () => {
             >
               Add to Cart
             </button>
-  
+            <button
+        className={`absolute top-4 right-4 p-2 rounded-full shadow-md transition 
+          ${wishlist.some(item => item.id === product.id) ? 'bg-rose-600 text-white' : 'bg-white text-rose-500 hover:bg-rose-100'}`}
+        onClick={handleWishlistToggle}
+      >
+        <Heart
+          className={`transition duration-300 ${
+            wishlist.some(item => item.id === product.id) ? 'fill-white' : 'hover:fill-rose-500'
+          }`}
+        />
+      </button>
             <div className="pt-6 border-t border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Highlights</h3>
               <ul className="space-y-2 text-sm text-gray-600">

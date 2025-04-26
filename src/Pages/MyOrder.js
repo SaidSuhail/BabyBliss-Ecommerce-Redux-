@@ -50,6 +50,18 @@ const MyOrdersPage = () => {
     navigate("/login"); 
   };
   console.log(handleLogout)
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Shipped":
+        return "text-blue-600";
+      case "Delivered":
+        return "text-green-600";
+      case "Cancelled":
+        return "text-red-600";
+      default:
+        return "text-yellow-600"; // Default to yellow for "Booked"
+    }
+  };
 
   if (!userid) {
     return (
@@ -92,7 +104,12 @@ const MyOrdersPage = () => {
             >
               <h2 className="text-xl font-semibold">Order</h2>
               <p className="text-sm text-gray-600">Date: {order.orderDate || "N/A"}</p>
-              <p className="text-sm text-yellow-600 font-semibold">Status: {order.status || "Booked"}</p>
+              {/* <p className="text-sm text-yellow-600 font-semibold">Status: {order.status || "Booked"}</p> */}
+              
+              {/* Dynamically set color based on status */}
+              <p className={`text-sm font-semibold ${getStatusColor(order.status)}`}>
+                Status: {order.status || "Booked"}
+              </p>
               <div className="order-products mt-4">
                 {Array.isArray(order.cart) && order.cart.length > 0 ? (
                   order.cart.map((product) => (

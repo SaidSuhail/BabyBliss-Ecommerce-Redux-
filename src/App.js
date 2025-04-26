@@ -25,6 +25,8 @@ import { Provider } from 'react-redux';
 import store from './app/store';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import WishList from './Pages/WishList';
+import OrderManagement from './Admin/OrderManagement';
 function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
@@ -45,6 +47,7 @@ function App() {
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path='/contact' element={<Contact/>}/>
         <Route path="/cart" element={<CartPage />} />
+        <Route path='/wishlist' element={<WishList/>}/>
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/billing" element={<BillingPage />} />
         <Route path="/payment-confirmation" element={<PaymentConfirmation />} />
@@ -55,6 +58,7 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="user-section" element={<UserSection />} />
             <Route path="product-section" element={<ProductSection />} />
+            <Route path="order-management" element={<OrderManagement/>}/>
           </Route>
       </Routes>
       {!isAuthPage &&!isAdminRoute && <Footer />}

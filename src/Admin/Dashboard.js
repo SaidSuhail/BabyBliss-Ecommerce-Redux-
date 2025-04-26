@@ -8,7 +8,9 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const { dashboardStats, loading, error } = useSelector((state) => state.admin);
+  const { dashboardStats, loading, error } = useSelector(
+    (state) => state.admin
+  );
 
   useEffect(() => {
     dispatch(fetchDashboardData());
@@ -18,7 +20,8 @@ const Dashboard = () => {
     return <div>Loading...</div>;
   }
 
-  const { userCount, productCount, totalOrderAmount, recentOrders } = dashboardStats;
+  const { userCount, productCount, totalOrderAmount, recentOrders } =
+    dashboardStats;
 
   const chartData = {
     labels: ["Revenue", "Remaining"],
@@ -52,7 +55,9 @@ const Dashboard = () => {
 
         <div className="bg-white p-6 rounded-lg shadow-lg flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-gray-700">Total Products</h2>
+            <h2 className="text-xl font-semibold text-gray-700">
+              Total Products
+            </h2>
             <p className="text-2xl font-bold text-gray-900">{productCount}</p>
           </div>
           <div className="bg-green-100 p-4 rounded-full text-green-600">
@@ -62,8 +67,12 @@ const Dashboard = () => {
 
         <div className="bg-white p-6 rounded-lg shadow-lg flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-gray-700">Total Orders Amount</h2>
-            <p className="text-2xl font-bold text-gray-900">₹{totalOrderAmount.toFixed(2)}</p>
+            <h2 className="text-xl font-semibold text-gray-700">
+              Total Orders Amount
+            </h2>
+            <p className="text-2xl font-bold text-gray-900">
+              ₹{totalOrderAmount.toFixed(2)}
+            </p>
           </div>
           <div className="bg-yellow-100 p-4 rounded-full text-yellow-600">
             <i className="fas fa-rupee-sign text-3xl"></i>
@@ -73,12 +82,17 @@ const Dashboard = () => {
 
       <div className="mt-10 flex justify-center">
         <div className="bg-rose-600 p-6 rounded-full w-80 h-80 flex items-center justify-center">
-          <Doughnut data={chartData} options={{ responsive: true, maintainAspectRatio: true }} />
+          <Doughnut
+            data={chartData}
+            options={{ responsive: true, maintainAspectRatio: true }}
+          />
         </div>
       </div>
 
       <div className="text-center mt-4">
-        <h2 className="text-xl font-semibold text-gray-700">Total Sales & Revenue</h2>
+        <h2 className="text-xl font-semibold text-gray-700">
+          Total Sales & Revenue
+        </h2>
         <p className="text-gray-600 text-lg mt-2">Revenue generated so far</p>
       </div>
 
@@ -106,6 +120,9 @@ const Dashboard = () => {
                   <th className="px-2 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Total Amount
                   </th>
+                  <th className="px-2 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    OrderStatus
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -113,8 +130,28 @@ const Dashboard = () => {
                   <tr key={order.id} className="hover:bg-gray-100">
                     <td className="px-2 py-2">{order.id}</td>
                     <td className="px-2 py-2">{order.orderDate}</td>
-                    <td className="px-2 py-2">{order.shippingDetails?.fullName || "Unknown"}</td>
-                    <td className="px-2 py-2">${order.totalAmount.toFixed(2)}</td>
+                    <td className="px-2 py-2">
+                      {order.shippingDetails?.fullName || "Unknown"}
+                    </td>
+                    <td className="px-2 py-2">
+                      ${order.totalAmount.toFixed(2)}
+                    </td>
+                    <td className="px-2 py-2">
+                      <span
+                        className={`px-2 py-1 rounded-full text-sm font-semibold
+                      ${
+                        order.status === "Delivered"
+                          ? "bg-green-100 text-green-800"
+                          : order.status === "Cancelled"
+                          ? "bg-red-100 text-red-800"
+                          : order.status === "Processing"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
+                      >
+                        {order.status || "Pending"}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>

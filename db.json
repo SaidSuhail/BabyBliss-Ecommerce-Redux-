@@ -146,12 +146,43 @@
       "role": "admin",
       "cart": [
         {
+          "id": "9",
+          "name": "Baby Blanket",
+          "category": "Clothing",
+          "price": 15,
+          "brand": "Hudson Baby",
+          "age_group": "0-2 years",
+          "image": "https://tse4.mm.bing.net/th?id=OIG1.7xOtELfFeAQ51mdMcwa6&pid=ImgGn",
+          "description": "Soft, cozy blanket for newborns.",
+          "quantity": 2
+        },
+        {
           "id": "8",
           "name": "Teething Ring",
           "category": "Toys",
           "price": "49",
-          "image": "https://tse3.mm.bing.net/th?id=OIG2.ImzqNMyO10YPYqYUrc.r&pid=ImgGn",
+          "image": "https://tse3.mm.bing.net/th?id=OIG4.0DKmCoQrLBAk0NCfbSik&pid=ImgGn",
           "description": "Soft and soothing teething ring for babies.",
+          "quantity": 2
+        },
+        {
+          "id": "15",
+          "name": "Baby Swing",
+          "category": "Toys",
+          "price": 100,
+          "brand": "Fisher-Price",
+          "age_group": "0-6 months",
+          "image": "https://images.pexels.com/photos/28010487/pexels-photo-28010487/free-photo-of-a-baby-in-a-santa-outfit-is-laying-in-a-swing.jpeg?auto=compress&cs=tinysrgb&w=400",
+          "description": "Soothing baby swing with multiple settings.",
+          "quantity": 2
+        },
+        {
+          "name": "Baby Carrier",
+          "category": "Baby Care",
+          "price": 40,
+          "image": "https://tse3.mm.bing.net/th?id=OIG2.X5fUlKg9C4o13TGAHihW&pid=ImgGn",
+          "description": "Comfortable carrier for carrying your baby.",
+          "id": "7",
           "quantity": 1
         }
       ],
@@ -170,13 +201,50 @@
           "name": "Teething Ring",
           "category": "Toys",
           "price": "49",
-          "image": "https://tse3.mm.bing.net/th?id=OIG2.ImzqNMyO10YPYqYUrc.r&pid=ImgGn",
+          "image": "https://tse3.mm.bing.net/th?id=OIG4.0DKmCoQrLBAk0NCfbSik&pid=ImgGn",
           "description": "Soft and soothing teething ring for babies.",
+          "quantity": 1
+        },
+        {
+          "id": "9",
+          "name": "Baby Blanket",
+          "category": "Clothing",
+          "price": 15,
+          "brand": "Hudson Baby",
+          "age_group": "0-2 years",
+          "image": "https://tse4.mm.bing.net/th?id=OIG1.7xOtELfFeAQ51mdMcwa6&pid=ImgGn",
+          "description": "Soft, cozy blanket for newborns.",
+          "quantity": 1
+        },
+        {
+          "name": "Baby Bath Tub",
+          "category": "Baby Care",
+          "price": "30",
+          "image": "https://staranddaisy.in/wp-content/uploads/2023/11/baby-bath-tub-bt-basic-red-main.jpg",
+          "description": "A comfort space for babies",
+          "id": "11",
           "quantity": 1
         }
       ],
       "orders": [],
-      "wishlist": [],
+      "wishlist": [
+        {
+          "id": "d457",
+          "name": "Baby Bangle",
+          "category": "toys",
+          "price": "499",
+          "image": "https://tse1.mm.bing.net/th?id=OIG1.c.HXxmk37lK3BS2wh1OS&pid=ImgGn",
+          "description": "A Toy For Your Baby"
+        },
+        {
+          "id": "57d2",
+          "name": "Shoe",
+          "category": "boys",
+          "price": "399",
+          "image": "https://tse1.mm.bing.net/th?id=OIG3.oJLWpOVuml7okg1947kA&pid=ImgGn",
+          "description": "Smooth material"
+        }
+      ],
       "blocked": false
     },
     {
@@ -184,7 +252,17 @@
       "name": "Rahul",
       "email": "rahul123@gmail.om",
       "password": "2343212",
-      "cart": [],
+      "cart": [
+        {
+          "id": "8",
+          "name": "Teething Ring",
+          "category": "Toys",
+          "price": "49",
+          "image": "https://tse3.mm.bing.net/th?id=OIG2.ImzqNMyO10YPYqYUrc.r&pid=ImgGn",
+          "description": "Soft and soothing teething ring for babies.",
+          "quantity": 1
+        }
+      ],
       "orders": [],
       "wishlist": [],
       "blocked": false
@@ -195,7 +273,7 @@
       "name": "Baby Carrier",
       "category": "Baby Care",
       "price": 40,
-      "image": "https://tse2.mm.bing.net/th?id=OIG4.I_2ytyUu2lzx3tyVuUIY&pid=ImgGn",
+      "image": "https://tse3.mm.bing.net/th?id=OIG2.X5fUlKg9C4o13TGAHihW&pid=ImgGn",
       "description": "Comfortable carrier for carrying your baby.",
       "id": "7"
     },
@@ -204,7 +282,7 @@
       "name": "Teething Ring",
       "category": "Toys",
       "price": "49",
-      "image": "https://tse3.mm.bing.net/th?id=OIG2.ImzqNMyO10YPYqYUrc.r&pid=ImgGn",
+      "image": "https://tse3.mm.bing.net/th?id=OIG4.0DKmCoQrLBAk0NCfbSik&pid=ImgGn",
       "description": "Soft and soothing teething ring for babies."
     },
     {
@@ -214,7 +292,7 @@
       "price": 15,
       "brand": "Hudson Baby",
       "age_group": "0-2 years",
-      "image": "https://tse4.mm.bing.net/th?id=OIG2.WLVKQTDI1goOAlj9kkys&pid=ImgGn",
+      "image": "https://tse4.mm.bing.net/th?id=OIG1.7xOtELfFeAQ51mdMcwa6&pid=ImgGn",
       "description": "Soft, cozy blanket for newborns."
     },
     {
@@ -262,7 +340,7 @@
       "price": 25,
       "brand": "Tommee Tippee",
       "age_group": "0-1 years",
-      "image": "https://tse4.mm.bing.net/th?id=OIG2.oPpCFXICEkIQCAVGoTtV&pid=ImgGn",
+      "image": "https://tse4.mm.bing.net/th?id=OIG4.3sS7KEwuoWdA0b26b.LS&pid=ImgGn",
       "description": "Warms bottles quickly and safely."
     },
     {
@@ -272,7 +350,7 @@
       "price": 20,
       "brand": "Summer Infant",
       "age_group": "0-2 years",
-      "image": "https://tse3.mm.bing.net/th?id=OIG4.PeDHDb.45ojFkEmR.1ow&pid=ImgGn",
+      "image": "https://tse4.mm.bing.net/th?id=OIG2.p3S6j6Qu4iKOBpAfhP4r&pid=ImgGn",
       "description": "Portable changing pad for on-the-go use."
     },
     {
@@ -292,7 +370,7 @@
       "price": 10,
       "brand": "Aveeno",
       "age_group": "0-2 years",
-      "image": "https://tse3.mm.bing.net/th?id=OIG2..qyw7UH2eyoRqDVkkMIJ&pid=ImgGn",
+      "image": "https://tse3.mm.bing.net/th?id=OIG4.bPGAa18fIyewMLs6iyqx&pid=ImgGn",
       "description": "Gentle baby lotion for soft skin."
     },
     {
@@ -310,14 +388,14 @@
       "name": "cycle",
       "category": "toys",
       "price": "4599",
-      "image": "https://tse4.mm.bing.net/th?id=OIG3.Kemyw78qvChLxbP459gb&pid=ImgGn"
+      "image": "https://tse3.mm.bing.net/th?id=OIG1.324PxOFum6KT4eWxPacY&pid=ImgGn"
     },
     {
       "id": "f691",
       "name": "Baby Rompers",
       "category": "dress",
       "price": "240",
-      "image": "https://tse3.mm.bing.net/th?id=OIG2.AncMrCOXOUbRUtOyAzoa&pid=ImgGn",
+      "image": "https://tse2.mm.bing.net/th?id=OIG3.uosG5CgZCJs2GKrU_HPv&pid=ImgGn",
       "description": "Good Quality Product"
     },
     {
@@ -325,7 +403,7 @@
       "name": "Baby Bangle",
       "category": "toys",
       "price": "499",
-      "image": "https://tse2.mm.bing.net/th?id=OIG4.bUAhgngN9mg1evvowr0U&pid=ImgGn",
+      "image": "https://tse1.mm.bing.net/th?id=OIG1.c.HXxmk37lK3BS2wh1OS&pid=ImgGn",
       "description": "A Toy For Your Baby"
     },
     {
@@ -356,7 +434,7 @@
       "id": "d4ed",
       "name": "Feeding Bottle",
       "category": "Baby Care",
-      "price": "48",
+      "price": "149",
       "image": "https://tse3.mm.bing.net/th?id=OIG2.KA4C8cNkS0I6DIMXnQ8K&pid=ImgGn",
       "description": "Fill After Reduced Heat"
     },
@@ -367,6 +445,14 @@
       "price": "120",
       "image": "https://tse4.mm.bing.net/th?id=OIG1.oX5K1kWE6mZcv6Sw9VTu&pid=ImgGn",
       "description": "Good Product"
+    },
+    {
+      "id": "b38f",
+      "name": "Baby Powder",
+      "category": "Baby Care",
+      "price": "299",
+      "image": "https://tse2.mm.bing.net/th?id=OIG4.l.ADFiyo.ViVxoG_5rjg&pid=ImgGn",
+      "description": "good fragrance"
     }
   ],
   "fashion": [
@@ -375,7 +461,7 @@
       "name": "Baby Dress",
       "category": "girls",
       "price": "750",
-      "image": "https://tse2.mm.bing.net/th?id=OIG3.8jj6vIdzDKad7JGZe_PD&pid=ImgGn",
+      "image": "https://tse1.mm.bing.net/th?id=OIG3.IYpKdbISHx7ulNmliAk7&pid=ImgGn",
       "description": "Good Quality product\n"
     },
     {
@@ -383,7 +469,7 @@
       "name": "Baby Jacket",
       "category": "boys",
       "price": "300",
-      "image": "https://tse2.mm.bing.net/th?id=OIG4.MP_NJTPIVJgo712hMy1T&pid=ImgGn",
+      "image": "https://tse1.mm.bing.net/th?id=OIG1._iSjNMVh56GhCgCAwC15&pid=ImgGn",
       "description": "smooth material"
     },
     {
@@ -391,7 +477,7 @@
       "name": "Baby Hats",
       "category": "girls",
       "price": 250,
-      "image": "https://tse3.mm.bing.net/th?id=OIG3.zxXOoXvl7jv8x3tGwiuT&pid=ImgGn",
+      "image": "https://tse3.mm.bing.net/th?id=OIG3.EE4Ore09_5rKlEN8Axk7&pid=ImgGn",
       "description": "For Your cute Angel"
     },
     {
@@ -399,7 +485,7 @@
       "name": "Baby Socks",
       "price": 150,
       "category": "girls",
-      "image": "https://tse4.mm.bing.net/th?id=OIG1.pC.vMYdHE8OBXPsFn7DD&pid=ImgGn",
+      "image": "https://tse4.mm.bing.net/th?id=OIG1.t3LiA3e.jC4EZMPdvWr.&pid=ImgGn",
       "description": "Pack of 2"
     },
     {
@@ -407,7 +493,7 @@
       "name": "Baby Hoodie",
       "category": "boys",
       "price": 450,
-      "image": "https://tse1.mm.bing.net/th?id=OIG4.YhNfkWOFgA_EJE46bd9y&pid=ImgGn",
+      "image": "https://tse4.mm.bing.net/th?id=OIG2.n.lsdr5tT6dFHFUKaGOE&pid=ImgGn",
       "description": "For Age Upto 2"
     },
     {
@@ -415,7 +501,7 @@
       "name": "Baby Dress 2",
       "category": "girls",
       "price": "450",
-      "image": "https://tse1.mm.bing.net/th?id=OIG2.6iDBDm7FR1GKkaU4b1mH&pid=ImgGn",
+      "image": "https://tse3.mm.bing.net/th?id=OIG1.Bgxur1gvI6jBhArfCr4A&pid=ImgGn",
       "description": "pure cotton"
     },
     {
@@ -423,7 +509,7 @@
       "name": "Baby Pants",
       "category": "boys",
       "price": 400,
-      "image": "https://tse1.mm.bing.net/th?id=OIG3.uljRC_._LLqVlaFRSapn&pid=ImgGn",
+      "image": "https://tse4.mm.bing.net/th?id=OIG3.U1P0ceYLZWg3vt9iyRGq&pid=ImgGn",
       "description": "Pack of 4"
     },
     {
@@ -431,7 +517,7 @@
       "name": "Baby Hoodie 2",
       "price": 700,
       "category": "girls",
-      "image": "https://tse1.mm.bing.net/th?id=OIG2.PD9Hm_LxMfk7prCCYBik&pid=ImgGn",
+      "image": "https://tse3.mm.bing.net/th?id=OIG1.hyr.dxKONf.Y7OB9MVjp&pid=ImgGn",
       "description": "For Age Upto 3"
     },
     {
@@ -439,7 +525,7 @@
       "name": "Baby Gloves",
       "price": 200,
       "category": "girls",
-      "image": "https://tse1.mm.bing.net/th?id=OIG1.Z_zWMHq7piJXSpTV6hrs&pid=ImgGn",
+      "image": "https://tse2.mm.bing.net/th?id=OIG1.BWzDH874i7Twvyc9UAHe&pid=ImgGn",
       "description": "pack of 1 pair"
     },
     {
@@ -447,7 +533,7 @@
       "name": "Baby Dress 3",
       "price": 650,
       "category": "girls",
-      "image": "https://tse2.mm.bing.net/th?id=OIG4.C4cZXL_Sya7.zK9T0X0g&pid=ImgGn",
+      "image": "https://tse2.mm.bing.net/th?id=OIG1.QupnLm38lkLK0nh_Y.wJ&pid=ImgGn",
       "description": "For Age upto 2"
     },
     {
@@ -455,7 +541,7 @@
       "name": "Baby T-Shirt",
       "category": "boys",
       "price": 450,
-      "image": "https://tse1.mm.bing.net/th?id=OIG3.dpEvdFmhnqp8_unXbWJX&pid=ImgGn",
+      "image": "https://tse3.mm.bing.net/th/id/OIG3.zosskMS.UXt_tfPOoyOp?pid=ImgGn",
       "description": "Good Material"
     },
     {
@@ -463,7 +549,7 @@
       "name": "Baby Romper",
       "category": "girls",
       "price": 550,
-      "image": "https://tse1.mm.bing.net/th?id=OIG2.9yvNZNZEKsyvT6ob6taS&pid=ImgGn",
+      "image": "https://tse1.mm.bing.net/th?id=OIG1.bVvC4ELax6ZurNT8d__v&pid=ImgGn",
       "description": "Good Product"
     },
     {
@@ -471,7 +557,7 @@
       "name": "Baby Pants 2",
       "category": "boys",
       "price": 400,
-      "image": "https://tse3.mm.bing.net/th?id=OIG1.bMtzKJVSbFMzWtez7B9L&pid=ImgGn",
+      "image": "https://tse1.mm.bing.net/th?id=OIG2.1bLGd4d_UoSKViSlIT36&pid=ImgGn",
       "description": "High Quality Material"
     },
     {
@@ -479,7 +565,7 @@
       "name": "Baby Swaddle",
       "category": "girls",
       "price": 500,
-      "image": "https://tse2.mm.bing.net/th?id=OIG1..eajYM8f.pDo_4JzZNOZ&pid=ImgGn",
+      "image": "https://tse1.mm.bing.net/th?id=OIG4.11InEbZW4_c73Zi74RDH&pid=ImgGn",
       "description": "New Born Care"
     },
     {
@@ -487,7 +573,7 @@
       "name": "Baby Hat 2",
       "category": "girls",
       "price": 350,
-      "image": "https://tse4.mm.bing.net/th?id=OIG4.KOqwNDdIVJgBBsitI2Ej&pid=ImgGn",
+      "image": "https://tse4.mm.bing.net/th?id=OIG4.6LzAqiKPQgQKS2JndX4U&pid=ImgGn",
       "description": "Pair of 3"
     },
     {
@@ -495,7 +581,7 @@
       "name": "Baby Dress 4",
       "category": "girls",
       "price": 650,
-      "image": "https://tse2.mm.bing.net/th?id=OIG1.NvEhjEGYxhVDQ7nfVUfr&pid=ImgGn",
+      "image": "https://tse4.mm.bing.net/th?id=OIG2.QF4whil83Dke8m7juQIu&pid=ImgGn",
       "description": "Good Product"
     },
     {
@@ -503,7 +589,7 @@
       "name": "Baby T-Shirt 2",
       "category": "boys",
       "price": 400,
-      "image": "https://tse1.mm.bing.net/th?id=OIG2._6x5nEstWU9XqyuzYid3&pid=ImgGn",
+      "image": "https://tse3.mm.bing.net/th?id=OIG4.s5FIoc7owUdzq2NCQAv4&pid=ImgGn",
       "description": "Good Product"
     },
     {
@@ -511,7 +597,7 @@
       "name": "Baby Mittens",
       "category": "girls",
       "price": 250,
-      "image": "https://tse3.mm.bing.net/th?id=OIG2.89AylswBU9h7vVUP7lFe&pid=ImgGn",
+      "image": "https://tse4.mm.bing.net/th?id=OIG1.ck5Yg5UqnRjkBiwXjwYN&pid=ImgGn",
       "description": "Winter Special"
     },
     {
@@ -519,70 +605,70 @@
       "name": "Baby Dress 5",
       "category": "girls",
       "price": 700,
-      "image": "https://tse2.mm.bing.net/th?id=OIG3.8QxaYX8s88zLF2zpRuzP&pid=ImgGn"
+      "image": "https://tse1.mm.bing.net/th?id=OIG1.LrN0rrrj2dS0R0ran5r7&pid=ImgGn"
     },
     {
       "id": "23",
       "name": "Baby Romper 2",
       "category": "boys",
       "price": 500,
-      "image": "https://tse2.mm.bing.net/th?id=OIG1.IzYA0KjnZWQOJ_Gt6jPF&pid=ImgGn"
+      "image": "https://tse4.mm.bing.net/th?id=OIG2.WUHG5E3.EB_C5.KzHxla&pid=ImgGn"
     },
     {
       "id": "24",
       "name": "Baby Pants 3",
       "category": "boys",
       "price": 400,
-      "image": "https://tse1.mm.bing.net/th?id=OIG1.1fF8Cdft4oVdE.Av8p1z&pid=ImgGn"
+      "image": "https://tse1.mm.bing.net/th?id=OIG2.Vyepv0IHKZODyODhr2.P&pid=ImgGn"
     },
     {
       "id": "25",
       "name": "Baby Dress 6",
       "category": "girls",
       "price": 750,
-      "image": "https://tse1.mm.bing.net/th?id=OIG4.pymbImKkLqkS1h4maxkP&pid=ImgGn"
+      "image": "https://tse1.mm.bing.net/th?id=OIG1.uMDiDygEwRp68b6.FRNw&pid=ImgGn"
     },
     {
       "id": "26",
       "name": "Baby Jacket 2",
       "category": "boys",
       "price": 600,
-      "image": "https://tse2.mm.bing.net/th?id=OIG1.KYiklKemBQSZTrykfdkK&pid=ImgGn"
+      "image": "https://tse1.mm.bing.net/th?id=OIG4.PEx6KpLj4_ET_4mptY40&pid=ImgGn"
     },
     {
       "id": "28",
       "name": "Baby Dress 7",
       "category": "girls",
       "price": 700,
-      "image": "https://tse4.mm.bing.net/th?id=OIG4.jD5QPp0i8UGUtpr5l7vh&pid=ImgGn"
+      "image": "https://tse3.mm.bing.net/th?id=OIG2.lCsGK7KkfzKAh0QpCIT9&pid=ImgGn"
     },
     {
       "id": "29",
       "name": "Baby Dress 8",
       "category": "girls",
       "price": 800,
-      "image": "https://tse2.mm.bing.net/th?id=OIG1.ZJWCyvoZ1YaW4EqNlcRf&pid=ImgGn"
+      "image": "https://tse2.mm.bing.net/th?id=OIG3.mYGPqqLdTwODatqBgon4&pid=ImgGn"
     },
     {
       "id": "30",
       "name": "Baby T-Shirt 3",
       "category": "boys",
       "price": 550,
-      "image": "https://tse4.mm.bing.net/th?id=OIG2.5NJXJIdEnRA8C5NlXvUW&pid=ImgGn"
+      "image": "https://tse3.mm.bing.net/th?id=OIG2.Vzxxhz9YXOnqbeEIvCOj&pid=ImgGn"
     },
     {
       "id": "6896",
       "name": "Baby Walker",
       "category": "boys",
       "price": "499",
-      "image": "https://tse3.mm.bing.net/th?id=OIG4.dOJmBqdfdK6AXmiMoO7X&pid=ImgGn"
+      "image": "https://tse2.mm.bing.net/th?id=OIG4.qkD62twQjLcIsEkhcV5a&pid=ImgGn"
     },
     {
       "id": "e125",
       "name": "Bath Toys",
       "category": "boys",
       "price": "149",
-      "image": "https://tse1.mm.bing.net/th?id=OIG2.OGQOBY7Zz55rvb_g9MEJ&pid=ImgGn",
+      "image": "https://tse4.mm.bing.net/th?id=OIG4.pvL8FR2t.Cfqrbk8qQ6c&pid=ImgGn",
       "description": "A Toy For Timepass"
     },
     {
@@ -590,7 +676,7 @@
       "name": "Baby FootWear",
       "category": "girls",
       "price": "249",
-      "image": "https://tse2.mm.bing.net/th?id=OIG2.3TGVFT1kjilOi7D3wN1_&pid=ImgGn",
+      "image": "https://tse1.mm.bing.net/th?id=OIG1.HIOlIGN.lmJBK8MKS3pb&pid=ImgGn",
       "description": "Smooth innersurface Make baby cool"
     },
     {
@@ -598,7 +684,7 @@
       "name": "Shoe",
       "category": "boys",
       "price": "399",
-      "image": "https://tse3.mm.bing.net/th?id=OIG2.j5oSUimbU9G3OMo4I4.a&pid=ImgGn",
+      "image": "https://tse1.mm.bing.net/th?id=OIG3.oJLWpOVuml7okg1947kA&pid=ImgGn",
       "description": "Smooth material"
     }
   ],
@@ -630,7 +716,8 @@
         "phone": "08848678300"
       },
       "totalAmount": 20,
-      "orderDate": "2024-12-24T12:03:14.767Z"
+      "orderDate": "2024-12-24T12:03:14.767Z",
+      "status": "Shipped"
     },
     {
       "id": "43ce",
@@ -662,7 +749,8 @@
         "phone": "09878663272"
       },
       "totalAmount": 2200,
-      "orderDate": "24 Dec 2024, 07:32:14 pm"
+      "orderDate": "24 Dec 2024, 07:32:14 pm",
+      "status": "Cancelled"
     },
     {
       "id": "c3d3",
@@ -702,7 +790,8 @@
         "phone": "09878663272"
       },
       "totalAmount": 140,
-      "orderDate": "25 Dec 2024, 09:16:06 am"
+      "orderDate": "25 Dec 2024, 09:16:06 am",
+      "status": "Cancelled"
     },
     {
       "id": "98e0",
@@ -734,7 +823,8 @@
         "phone": "09878663272"
       },
       "totalAmount": 800,
-      "orderDate": "25 Dec 2024, 09:18:28 am"
+      "orderDate": "25 Dec 2024, 09:18:28 am",
+      "status": "Shipped"
     },
     {
       "id": "3802",
@@ -832,7 +922,8 @@
         "phone": "09878663272"
       },
       "totalAmount": 80,
-      "orderDate": "25 Dec 2024, 02:52:28 pm"
+      "orderDate": "25 Dec 2024, 02:52:28 pm",
+      "status": "Shipped"
     },
     {
       "id": "c5ab",
@@ -864,7 +955,8 @@
         "phone": "08848678300"
       },
       "totalAmount": 1800,
-      "orderDate": "25 Dec 2024, 06:15:24 pm"
+      "orderDate": "25 Dec 2024, 06:15:24 pm",
+      "status": "Delivered"
     },
     {
       "id": "103a",
@@ -1251,7 +1343,8 @@
         "phone": "09878663272"
       },
       "totalAmount": 210,
-      "orderDate": "25 Jan 2025, 11:23:16 pm"
+      "orderDate": "25 Jan 2025, 11:23:16 pm",
+      "status": "Delivered"
     },
     {
       "id": "d0b2",
@@ -1320,7 +1413,8 @@
         "phone": "09878663272"
       },
       "totalAmount": 165,
-      "orderDate": "30 Jan 2025, 11:04:20 am"
+      "orderDate": "30 Jan 2025, 11:04:20 am",
+      "status": "Delivered"
     },
     {
       "id": "fec6",
@@ -1376,7 +1470,8 @@
         "phone": "09878663272"
       },
       "totalAmount": 3920,
-      "orderDate": "30 Jan 2025, 10:46:59 pm"
+      "orderDate": "30 Jan 2025, 10:46:59 pm",
+      "status": "Cancelled"
     },
     {
       "id": "a23d",
@@ -1416,7 +1511,8 @@
         "phone": "09878663272"
       },
       "totalAmount": 375,
-      "orderDate": "30 Jan 2025, 11:03:19 pm"
+      "orderDate": "30 Jan 2025, 11:03:19 pm",
+      "status": "Delivered"
     },
     {
       "id": "d2c5",
@@ -1508,7 +1604,8 @@
         "phone": "78389928329"
       },
       "totalAmount": 14276,
-      "orderDate": "01 Feb 2025, 10:49:37 am"
+      "orderDate": "01 Feb 2025, 10:49:37 am",
+      "status": "Delivered"
     },
     {
       "id": "f48d",
@@ -1555,7 +1652,8 @@
         "phone": "78389928329"
       },
       "totalAmount": 200,
-      "orderDate": "19 Feb 2025, 08:31:18 pm"
+      "orderDate": "19 Feb 2025, 08:31:18 pm",
+      "status": "Delivered"
     },
     {
       "id": "6c86",
@@ -1643,7 +1741,8 @@
         "phone": "09878663272"
       },
       "totalAmount": 4737,
-      "orderDate": "20 Feb 2025, 10:23:00 am"
+      "orderDate": "20 Feb 2025, 10:23:00 am",
+      "status": "Delivered"
     },
     {
       "id": "cd60",
@@ -1681,7 +1780,8 @@
         "phone": "08848678300"
       },
       "totalAmount": 113,
-      "orderDate": "20 Feb 2025, 10:51:38 am"
+      "orderDate": "20 Feb 2025, 10:51:38 am",
+      "status": "Shipped"
     },
     {
       "id": "2876",
@@ -1709,6 +1809,123 @@
       },
       "totalAmount": 49,
       "orderDate": "21 Feb 2025, 09:31:43 am"
+    },
+    {
+      "id": "b1da",
+      "cart": [
+        {
+          "id": "8",
+          "name": "Teething Ring",
+          "category": "Toys",
+          "price": "49",
+          "image": "https://tse3.mm.bing.net/th?id=OIG4.0DKmCoQrLBAk0NCfbSik&pid=ImgGn",
+          "description": "Soft and soothing teething ring for babies.",
+          "quantity": 1
+        }
+      ],
+      "userId": "3480",
+      "shippingDetails": {
+        "fullName": "arjun",
+        "address1": "rosevilla",
+        "address2": "British colony",
+        "city": "kochi",
+        "state": "kerala",
+        "postalCode": "vypin",
+        "country": "India",
+        "phone": "09878663272"
+      },
+      "totalAmount": 49,
+      "orderDate": "14 Apr 2025, 04:28:22 pm",
+      "status": "Delivered"
+    },
+    {
+      "id": "7492",
+      "cart": [
+        {
+          "id": "8",
+          "name": "Teething Ring",
+          "category": "Toys",
+          "price": "49",
+          "image": "https://tse3.mm.bing.net/th?id=OIG4.0DKmCoQrLBAk0NCfbSik&pid=ImgGn",
+          "description": "Soft and soothing teething ring for babies.",
+          "quantity": 1
+        },
+        {
+          "id": "13",
+          "name": "Swaddle Blankets",
+          "category": "Clothing",
+          "price": 18,
+          "brand": "Aden + Anais",
+          "age_group": "0-3 months",
+          "image": "https://images.pexels.com/photos/9297651/pexels-photo-9297651.jpeg?auto=compress&cs=tinysrgb&w=400",
+          "description": "Breathable swaddle blankets for newborns.",
+          "quantity": 1
+        },
+        {
+          "id": "14",
+          "name": "Baby Bibs (Pack of 4)",
+          "category": "Clothing",
+          "price": 12,
+          "brand": "Burt's Bees",
+          "age_group": "0-12 months",
+          "image": "https://images.pexels.com/photos/7184202/pexels-photo-7184202.jpeg?auto=compress&cs=tinysrgb&w=400",
+          "description": "Soft cotton bibs for feeding and drooling.",
+          "quantity": 1
+        }
+      ],
+      "userId": "4616",
+      "shippingDetails": {
+        "fullName": "govind kumar",
+        "address1": "Roy Mathew",
+        "address2": "British colony",
+        "city": "kochi",
+        "state": "kerala",
+        "postalCode": "673003",
+        "country": "India",
+        "phone": "09878663272"
+      },
+      "totalAmount": 79,
+      "orderDate": "14 Apr 2025, 08:31:34 pm",
+      "status": "Delivered"
+    },
+    {
+      "id": "5cf9",
+      "cart": [
+        {
+          "id": "9",
+          "name": "Baby Blanket",
+          "category": "Clothing",
+          "price": 15,
+          "brand": "Hudson Baby",
+          "age_group": "0-2 years",
+          "image": "https://tse4.mm.bing.net/th?id=OIG1.7xOtELfFeAQ51mdMcwa6&pid=ImgGn",
+          "description": "Soft, cozy blanket for newborns.",
+          "quantity": 1
+        },
+        {
+          "id": "8",
+          "name": "Teething Ring",
+          "category": "Toys",
+          "price": "49",
+          "image": "https://tse3.mm.bing.net/th?id=OIG4.0DKmCoQrLBAk0NCfbSik&pid=ImgGn",
+          "description": "Soft and soothing teething ring for babies.",
+          "quantity": 1
+        }
+      ],
+      "userId": "3480",
+      "shippingDetails": {
+        "fullName": "arjun",
+        "address1": "rosevilla",
+        "address2": "British colony",
+        "city": "kochi",
+        "state": "kerala",
+        "postalCode": "vypin",
+        "country": "India",
+        "phone": "09878663272"
+      },
+      "totalAmount": 64,
+      "orderDate": "25 Apr 2025, 08:28:06 pm",
+      "status": "Delivered"
     }
   ]
 }
