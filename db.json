@@ -203,7 +203,7 @@
           "price": "49",
           "image": "https://tse3.mm.bing.net/th?id=OIG4.0DKmCoQrLBAk0NCfbSik&pid=ImgGn",
           "description": "Soft and soothing teething ring for babies.",
-          "quantity": 1
+          "quantity": 2
         },
         {
           "id": "9",
@@ -214,7 +214,7 @@
           "age_group": "0-2 years",
           "image": "https://tse4.mm.bing.net/th?id=OIG1.7xOtELfFeAQ51mdMcwa6&pid=ImgGn",
           "description": "Soft, cozy blanket for newborns.",
-          "quantity": 1
+          "quantity": 2
         },
         {
           "name": "Baby Bath Tub",
@@ -223,18 +223,7 @@
           "image": "https://staranddaisy.in/wp-content/uploads/2023/11/baby-bath-tub-bt-basic-red-main.jpg",
           "description": "A comfort space for babies",
           "id": "11",
-          "quantity": 1
-        }
-      ],
-      "orders": [],
-      "wishlist": [
-        {
-          "id": "d457",
-          "name": "Baby Bangle",
-          "category": "toys",
-          "price": "499",
-          "image": "https://tse1.mm.bing.net/th?id=OIG1.c.HXxmk37lK3BS2wh1OS&pid=ImgGn",
-          "description": "A Toy For Your Baby"
+          "quantity": 2
         },
         {
           "id": "57d2",
@@ -242,9 +231,21 @@
           "category": "boys",
           "price": "399",
           "image": "https://tse1.mm.bing.net/th?id=OIG3.oJLWpOVuml7okg1947kA&pid=ImgGn",
-          "description": "Smooth material"
+          "description": "Smooth material",
+          "quantity": 2
+        },
+        {
+          "id": "d457",
+          "name": "Baby Bangle",
+          "category": "toys",
+          "price": "499",
+          "image": "https://tse1.mm.bing.net/th?id=OIG1.c.HXxmk37lK3BS2wh1OS&pid=ImgGn",
+          "description": "A Toy For Your Baby",
+          "quantity": 2
         }
       ],
+      "orders": [],
+      "wishlist": [],
       "blocked": false
     },
     {

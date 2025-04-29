@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { removeItemFromWishlist } from "../Features/userSlice";
 import { toast } from "react-toastify";
+import { addItem } from "../Features/userSlice";
 
 const WishlistPage = () => {
   const dispatch = useDispatch();
@@ -9,6 +10,12 @@ const WishlistPage = () => {
   const handleRemoveFromWishlist = (itemId) => {
     dispatch(removeItemFromWishlist(itemId));
   };
+
+  
+    const handleAddToCart = (item) => {
+      dispatch(addItem(item)); 
+    };
+  
   return (
     <div className="min-h-screen p-8 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -78,7 +85,11 @@ const WishlistPage = () => {
                     <span className="text-2xl font-bold text-rose-600">
                       ₹{item.price}
                     </span>
-                    <button className="flex items-center space-x-2 px-4 py-2 bg-rose-600 hover:bg-rose-600 text-white rounded-lg transition-colors duration-200">
+                    {/* <button  className="flex items-center space-x-2 px-4 py-2 bg-rose-600 hover:bg-rose-600 text-white rounded-lg transition-colors duration-200"> */}
+                    <button
+                      onClick={() => handleAddToCart(item)}
+                      className="flex items-center space-x-2 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition-colors duration-200"
+                    >
                       <span>Add to Cart</span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

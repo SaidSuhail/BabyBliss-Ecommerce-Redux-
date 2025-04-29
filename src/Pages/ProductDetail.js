@@ -29,12 +29,6 @@ const ProductDetail = () => {
         setLoading(false);
       });
   }, [productId]);
-  // useEffect(() => {
-  //   // Check if the product is in the wishlist
-  //   if (product && wishlist.some(item => item.id === product.id)) {
-  //     setIsWishlisted(true);
-  //   }
-  // }, [wishlist, product]);
   useEffect(() => {
     if (product) {
       setIsWishlisted(wishlist.some((item) => item.id === product.id));
@@ -70,28 +64,7 @@ const ProductDetail = () => {
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
             />
 
-            {/* Heart Icon for Wishlist */}
-            {/* <button
-              onClick={handleWishlistToggle}
-              className={`absolute top-4 right-4 p-2 rounded-full shadow-lg 
-                          ${isWishlisted ? 'bg-rose-500 text-white' : 'bg-white text-gray-600'} 
-                          hover:bg-rose-500 hover:text-white transition duration-300`}
-            >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill={isWishlisted ? 'currentColor' : 'none'}
-                viewBox="0 0 24 24" 
-                stroke="currentColor" 
-                className="w-6 h-6"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2}
-                  d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21.682l-7.682-7.682a4.5 4.5 0 010-6.364z" 
-                />
-              </svg>
-            </button> */}
+          
           </div>
 
           {/* Thumbnail Gallery */}
