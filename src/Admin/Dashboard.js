@@ -17,7 +17,7 @@ const Dashboard = () => {
   }, [dispatch]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Loading....</div>;
   }
 
   const { userCount, productCount, totalOrderAmount, recentOrders } =
@@ -121,35 +121,45 @@ const Dashboard = () => {
                     Total Amount
                   </th>
                   <th className="px-2 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Phone
+                  </th>
+                  <th className="px-2 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     OrderStatus
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {recentOrders.map((order) => (
-                  <tr key={order.id} className="hover:bg-gray-100">
-                    <td className="px-2 py-2">{order.id}</td>
-                    <td className="px-2 py-2">{order.orderDate}</td>
+                  <tr key={order.OrderId} className="hover:bg-gray-100">
+                    <td className="px-2 py-2">{order.OrderId}</td>
+                    {/* <td className="px-2 py-2">{order.OrderDate}</td> */}
                     <td className="px-2 py-2">
-                      {order.shippingDetails?.fullName || "Unknown"}
+                      {new Date(order.OrderDate).toLocaleDateString("en-GB", {
+                        weekday: "short", // Optional: Short weekday name (Mon, Tue, etc.)
+                        year: "numeric", // Full year (2025)
+                        month: "short", // Short month name (Jan, Feb, etc.)
+                        day: "numeric", // Day of the month (1-31)
+                      })}
                     </td>
-                    <td className="px-2 py-2">
-                      ${order.totalAmount.toFixed(2)}
-                    </td>
+                    <td className="px-2 py-2">{order.UserName || "Unknown"}</td>
+                    <td className="px-2 py-2">₹{order.TotalPrice}</td>
+                    {/* Loop through each item in the order and display the TotalPrice */}
+                    <td className="px-2 py-2">{order.Phone}</td>
+
                     <td className="px-2 py-2">
                       <span
                         className={`px-2 py-1 rounded-full text-sm font-semibold
-                      ${
-                        order.status === "Delivered"
-                          ? "bg-green-100 text-green-800"
-                          : order.status === "Cancelled"
-                          ? "bg-red-100 text-red-800"
-                          : order.status === "Processing"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
+                        ${
+                          order.OrderStatus === "Delivered"
+                            ? "bg-green-100 text-green-800"
+                            : order.OrderStatus === "Cancelled"
+                            ? "bg-red-100 text-red-800"
+                            : order.OrderStatus === "Processing"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-blue-100 text-blue-800"
+                        }`}
                       >
-                        {order.status || "Pending"}
+                        {order.OrderStatus || "Order Placed"}
                       </span>
                     </td>
                   </tr>

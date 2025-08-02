@@ -12,6 +12,11 @@ const BillingPage = () => {
     0
   );
 
+  const tax = (totalAmount * 5) / 100;
+  const deliveryCharge = 40;
+  const grandTotal = totalAmount + tax + deliveryCharge;
+
+
   const handlePaymentOption = (method) => {
     if (method === "Online Payment") {
       setShowOnlinePayment(true);
@@ -74,12 +79,13 @@ const BillingPage = () => {
       </div>
 
       {/* Order Details */}
+      
+      {/* Order Details */}
       <div className="order-details bg-white p-4 rounded shadow mb-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-semibold">Order Details</h2>
           <span className="text-sm text-gray-600">
-            {formattedDate} - {formattedTime}{" "}
-            {/* Display current date and time */}
+            {formattedDate} - {formattedTime}
           </span>
         </div>
         {cart.map((item) => (
@@ -91,9 +97,23 @@ const BillingPage = () => {
           </div>
         ))}
         <hr className="my-4" />
-        <div className="flex justify-between font-bold">
-          <span>Total Amount:</span>
-          <span>₹{totalAmount}</span>
+        {/* Price Details */}
+        <div className="flex justify-between mb-2">
+          <span>Subtotal:</span>
+          <span>₹{totalAmount.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between mb-2">
+          <span>Tax (5%):</span>
+          <span>₹{tax.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between mb-2">
+          <span>Delivery Charges:</span>
+          <span>₹{deliveryCharge.toFixed(2)}</span>
+        </div>
+        <hr className="my-4" />
+        <div className="flex justify-between font-bold text-lg">
+          <span>Grand Total:</span>
+          <span>₹{grandTotal.toFixed(2)}</span>
         </div>
       </div>
 

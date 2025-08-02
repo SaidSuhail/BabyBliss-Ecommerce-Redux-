@@ -10,7 +10,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     if (isBlocked === "true") {
       alert("Your account has been blocked.");
       return <Navigate to="/login" replace />;
-    } else if (userRole === "admin") {
+    } else if (userRole === "Admin") {
       return <Component {...rest} />;
     } else {
       return <Navigate to="/" replace />;

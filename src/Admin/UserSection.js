@@ -32,11 +32,13 @@ const UserDetails = () => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
+  console.log("Fetcheddd users:", users);
+
   // Fetch orders when a user is selected
   useEffect(() => {
     if (selectedUser) {
       setLoading(true);
-      dispatch(fetchOrders(selectedUser.id))
+      dispatch(fetchOrders(selectedUser.Id))
         .catch((err) => {
           setError("Failed to load orders.");
           toast.error("Failed to load orders.");
@@ -44,6 +46,8 @@ const UserDetails = () => {
         .finally(() => setLoading(false));
     }
   }, [dispatch, selectedUser]);
+  console.log("orders found", orders);
+  console.log("Selected User:", selectedUser);
 
   const handleViewDetails = (user) => {
     dispatch(setSelectedUser(user)); // Step 2: Select user
@@ -56,15 +60,21 @@ const UserDetails = () => {
     }, 100); // Step 3: Add slight delay for smooth scroll
   };
 
-  // Handle block/unblock user action
-  const handleBlockUnblock = async (userId, isBlocked) => {
-    try {
-      await dispatch(blockUnblockUser({ userId, isBlocked }));
+  const handleBlockUnblock = async (userId, IsBlocked) => {
+    console.log("Block/Unblock Clicked:", { userId, IsBlocked }); // ✅ Log userId and isBlocked
 
-      const notificationType = isBlocked ? "success" : "danger"; // Red for blocking, Green for unblocking
+    if (!userId) {
+      console.error("userId is undefined. Cannot proceed.");
+      return;
+    }
+
+    try {
+      await dispatch(blockUnblockUser({ userId, IsBlocked })); // Dispatch the action
+
+      const notificationType = IsBlocked ? "success" : "danger"; // Red for blocking, Green for unblocking
       Store.addNotification({
         title: "Success!",
-        message: `User ${isBlocked ? "unblocked" : "blocked"} successfully!`,
+        message: `User ${IsBlocked ? "unblocked" : "blocked"} successfully!`,
         type: notificationType, // 'success', 'danger', 'info', 'warning'
         insert: "top", // Position of the notification
         container: "top-right", // Container location
@@ -75,6 +85,8 @@ const UserDetails = () => {
           onScreen: true, // Keeps notification on screen
         },
       });
+      await dispatch(fetchUsers()); // Optional: Refetch users to ensure the list is updated
+      // window.location.reload()
     } catch (err) {
       Store.addNotification({
         title: "Error!",
@@ -109,36 +121,39 @@ const UserDetails = () => {
 
       {/* User List */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {users.map((user) => (
-          <div
-            key={user.id}
-            className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col"
-          >
-            <h3 className="text-xl font-semibold text-center text-gray-900 truncate">
-              {user.name}
-            </h3>
-            <p className="text-center text-gray-600 truncate">{user.email}</p>
+        {Array.isArray(users) &&
+          users.map((user) => (
+            <div
+              key={user.Id}
+              className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col"
+            >
+              <h3 className="text-xl font-semibold text-center text-gray-900 truncate">
+                {user.UserName}
+              </h3>
+              <p className="text-center text-gray-600 truncate">
+                {user.UserEmail}
+              </p>
 
-            <div className="flex justify-center mt-4 space-x-4">
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 w-full sm:w-auto sm:px-3 sm:py-1 sm:text-sm"
-                onClick={() => handleViewDetails(user)} // Set selected user
-              >
-                View
-              </button>
-              <button
-                onClick={() => handleBlockUnblock(user.id, user.blocked)}
-                className={`px-4 py-2 rounded-md text-white w-full sm:w-auto sm:px-3 sm:py-1 sm:text-sm ${
-                  user.blocked
-                    ? "bg-red-500 hover:bg-red-600"
-                    : "bg-green-500 hover:bg-green-600"
-                }`}
-              >
-                {user.blocked ? "Unblock" : "Block"}
-              </button>
+              <div className="flex justify-center mt-4 space-x-4">
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 w-full sm:w-auto sm:px-3 sm:py-1 sm:text-sm"
+                  onClick={() => handleViewDetails(user)} // Set selected user
+                >
+                  View
+                </button>
+                <button
+                  onClick={() => handleBlockUnblock(user.Id, user.IsBlocked)}
+                  className={`px-4 py-2 rounded-md text-white w-full sm:w-auto sm:px-3 sm:py-1 sm:text-sm ${
+                    user.IsBlocked
+                      ? "bg-red-500 hover:bg-red-600" // Red for blocked
+                      : "bg-green-500 hover:bg-green-600" // Green for unblocked
+                  }`}
+                >
+                  {user.IsBlocked ? "Unblock" : "Block"}
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
 
       {/* Show User Details */}
@@ -154,20 +169,20 @@ const UserDetails = () => {
             <div className="space-y-2">
               <p className="flex items-center">
                 <strong className="mr-2 text-gray-700">Name:</strong>{" "}
-                <span className="text-gray-800">{selectedUser.name}</span>
+                <span className="text-gray-800">{selectedUser.UserName}</span>
               </p>
               <p className="flex items-center">
                 <strong className="mr-2 text-gray-700">Email:</strong>{" "}
-                <span className="text-gray-800">{selectedUser.email}</span>
+                <span className="text-gray-800">{selectedUser.UserEmail}</span>
               </p>
               <p className="flex items-center">
                 <strong className="mr-2 text-gray-700">Password:</strong>{" "}
-                <span className="text-gray-800">{selectedUser.password}</span>
+                <span className="text-gray-800">{selectedUser.Password}</span>
               </p>
               {selectedUser.role === "admin" && (
                 <p className="flex items-center">
                   <strong className="mr-2 text-gray-700">Role:</strong>{" "}
-                  <span className="text-gray-800">{selectedUser.role}</span>
+                  <span className="text-gray-800">{selectedUser.Role}</span>
                 </p>
               )}
             </div>
@@ -203,7 +218,7 @@ const UserDetails = () => {
                         ₹
                         {selectedUser.cart
                           .reduce(
-                            (acc, item) => acc + (parseFloat(item.price) || 0),
+                            (acc, item) => acc + (parseFloat(item.Price) || 0),
                             0
                           )
                           .toFixed(2)}
@@ -215,6 +230,7 @@ const UserDetails = () => {
             )}
 
             {/* Orders */}
+
             {loading ? (
               <p className="text-gray-700">Loading orders...</p>
             ) : (
@@ -234,17 +250,25 @@ const UserDetails = () => {
                         {orders.map((order, index) => (
                           <tr key={index} className="border-b">
                             <td className="py-2 px-8 text-gray-800">
-                              {order.id}
+                              {order.OrderId}
                             </td>
                             <td className="py-2 px-4 text-gray-800">
-                              ₹{order.totalAmount.toFixed(2)}
+                              ₹{order.TotalPrice}
                             </td>
+                           
                             <td className="py-2 px-4 text-gray-800">
-                              {order.orderDate}
+                              {new Date(order.OrderDate).toLocaleDateString(
+                                "en-GB",
+                                {
+                                  year: "numeric", // Full year (2025)
+                                  month: "short", // Short month name (Jan, Feb, etc.)
+                                  day: "numeric", // Day of the month (1-31)
+                                  weekday: "short", // Optional: Short weekday name (Mon, Tue, etc.)
+                                }
+                              )}
                             </td>
                           </tr>
                         ))}
-                        {/* Total Order Amount Row */}
                         <tr className="border-t font-bold bg-gray-100">
                           <td
                             className="py-3 px-4 text-gray-900 text-right"
@@ -256,7 +280,7 @@ const UserDetails = () => {
                             ₹
                             {orders
                               .reduce(
-                                (acc, order) => acc + (order.totalAmount || 0),
+                                (acc, order) => acc + (order.TotalPrice || 0),
                                 0
                               )
                               .toFixed(2)}
@@ -278,6 +302,7 @@ const UserDetails = () => {
               </div>
             )}
           </div>
+
           {/* Back/Exit Button */}
           <button
             onClick={handleExit} // Clears the selected user, effectively "exiting" the user details page

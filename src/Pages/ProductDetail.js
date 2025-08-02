@@ -19,9 +19,9 @@ const ProductDetail = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/fashion/${productId}`)
+      .get(`https://localhost:7055/GetById/${productId}`)
       .then((response) => {
-        setProduct(response.data);
+        setProduct(response.data.Data);
         setLoading(false);
       })
       .catch((error) => {
@@ -31,12 +31,20 @@ const ProductDetail = () => {
   }, [productId]);
   useEffect(() => {
     if (product) {
-      setIsWishlisted(wishlist.some((item) => item.id === product.id));
+      setIsWishlisted(wishlist.some((item) => item.productId === product.productId));
     }
   }, [wishlist, product]);
 
   const handleAddToCart = () => {
-    dispatch(addItem(product));
+    dispatch(
+      addItem({
+        productId: product.Id,
+        ProductName: product.ProductName,
+        Price: product.OfferPrize || product.ProductPrice,
+        OrginalPrize: product.ProductPrice,
+        ProductImage: product.ImageUrl,
+      })
+    );
   };
 
   const handleWishlistToggle = () => {
@@ -44,7 +52,7 @@ const ProductDetail = () => {
     if (!isWishlisted) {
       dispatch(addItemToWishlist(product));
     } else {
-      dispatch(removeItemFromWishlist(product.id));
+      dispatch(removeItemFromWishlist(product.Id));
     }
   };
 
@@ -59,12 +67,10 @@ const ProductDetail = () => {
           {/* Main Product Image */}
           <div className="relative w-full max-w-[70%] aspect-square bg-gray-100 rounded-xl shadow-lg overflow-hidden">
             <img
-              src={product.image}
-              alt={product.name}
+              src={product.ImageUrl}
+              alt={product.ProductName}
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
             />
-
-          
           </div>
 
           {/* Thumbnail Gallery */}
@@ -75,8 +81,8 @@ const ProductDetail = () => {
                 className="aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer"
               >
                 <img
-                  src={product.image}
-                  alt={`${product.name} thumbnail ${item}`}
+                  src={product.ImageUrl}
+                  alt={`${product.ProductName} thumbnail ${item}`}
                   className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity duration-200"
                 />
               </div>
@@ -88,17 +94,17 @@ const ProductDetail = () => {
         <div className="flex justify-end">
           <div className="max-w-md w-full bg-white rounded-xl shadow-md p-6 md:p-8 lg:p-10 relative">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-              {product.name}
+              {product.ProductName}
             </h1>
 
             <p className="text-gray-600 text-base leading-relaxed mb-6">
-              {product.description}
+              {product.ProductDescription}
             </p>
 
             <div className="space-y-6">
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl font-bold text-rose-600">
-                  ₹{product.price}
+                  ₹{product.OfferPrize || product.ProductPrice}
                 </span>
                 <span className="text-sm text-gray-500">INR</span>
               </div>
@@ -114,7 +120,7 @@ const ProductDetail = () => {
               <button
                 className={`absolute top-4 right-4 p-2 rounded-full shadow-md transition 
           ${
-            wishlist.some((item) => item.id === product.id)
+            wishlist.some((item) => item.Id === product.Id)
               ? "bg-rose-600 text-white"
               : "bg-white text-rose-500 hover:bg-rose-100"
           }`}
@@ -122,7 +128,7 @@ const ProductDetail = () => {
               >
                 <Heart
                   className={`transition duration-300 ${
-                    wishlist.some((item) => item.id === product.id)
+                    wishlist.some((item) => item.Id === product.Id)
                       ? "fill-white"
                       : "hover:fill-rose-500"
                   }`}

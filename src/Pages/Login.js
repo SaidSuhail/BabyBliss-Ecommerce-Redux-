@@ -7,72 +7,88 @@ import { fetchWishlistData, setCart, setUserId } from "../Features/userSlice";
 import { useDispatch } from "react-redux";
 
 const initialValues = {
-  email: "",
-  password: "",
+  UserEmail: "", // Changed to match backend DTO
+  Password: "", // Changed to match backend DTO
 };
 
 const validationSchema = Yup.object({
-  email: Yup.string()
+  UserEmail: Yup.string()
     .email("Invalid email format")
     .required("Email is required"),
-  password: Yup.string()
+  Password: Yup.string()
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
 });
 
 function Login() {
-  const dispatch = useDispatch(); // Initialize dispatch
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
-      // Fetch all users from the JSON server
-      const response = await axios.get("http://localhost:3001/users");
-
-      // Find a user with the same email and password
-      const existingUser = response.data.find(
-        (user) =>
-          user.email === values.email && user.password === values.password
+      // Send login request to .NET backend
+      const response = await axios.post(
+        "https://localhost:7055/api/Auth/Login",
+        {
+          UserEmail: values.UserEmail,
+          Password: values.Password,
+        }
       );
 
-      if (existingUser) {
-        if (existingUser.blocked) {
+      if (response.status === 200) {
+        const userData = response.data;
+
+        // Handle blocked users (if your backend returns this)
+        if (userData.isBlocked) {
           setFieldError(
             "general",
             "Your account has been blocked. Please contact support."
           );
-        } else {
-          // Store user data in localStorage
-          localStorage.setItem("isLoggedIn", "true");
-          localStorage.setItem("username", existingUser.name);
-          localStorage.setItem("userid", existingUser.id);
-          localStorage.setItem("role", existingUser.role);
-
-          // Retrieve and dispatch cart data
-          const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-          dispatch(setCart(storedCart)); // Ensure cart data is synced to Redux
-          // Dispatch Redux action to set userId
-          dispatch(setUserId(existingUser.id));
-          dispatch(fetchWishlistData(existingUser.id));
-          // fetchWishlistData(existingUser.id);  // call after setting userId
-
-          if (existingUser.role === "admin") {
-            alert("Admin login successful!");
-            navigate("/admin/dashboard");
-          } else {
-            alert("User login successful!");
-            navigate("/");
-          }
+          return;
         }
-      } else {
-        setFieldError(
-          "general",
-          "Invalid email or password. Please try again."
-        );
+
+        // Store authentication data separately
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("token", userData.Token);
+        localStorage.setItem("userid", userData.Id); // ✔ correct: Id with capital I
+        localStorage.setItem("username", userData.UserName);
+        localStorage.setItem("email", userData.UserEmail);
+        localStorage.setItem("role", userData.Role);
+        localStorage.removeItem("userData");
+
+        // Sync cart from localStorage to Redux
+        const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+        dispatch(setCart(storedCart));
+
+        // Set user ID in Redux
+        dispatch(setUserId(userData.Id)); // Use `Id` here, not `id`
+        dispatch(fetchWishlistData(userData.Id));
+
+        // Handle navigation based on role
+        if (userData.Role === "Admin") {
+          alert("Admin login successful!");
+          navigate("/admin/dashboard");
+        } else {
+          alert("User login successful!");
+          navigate("/");
+        }
       }
     } catch (error) {
-      console.error("Error during login:", error);
-      alert("An error occurred. Please try again.");
+      console.error("Login error:", error.response?.data);
+
+      // Handle backend validation errors
+      if (error.response?.status === 400) {
+        const backendErrors = error.response.data.errors;
+        if (backendErrors) {
+          Object.keys(backendErrors).forEach((field) => {
+            setFieldError(field, backendErrors[field][0]);
+          });
+        } else {
+          setFieldError("general", "Invalid email or password");
+        }
+      } else {
+        setFieldError("general", "Login failed. Please try again.");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -95,40 +111,40 @@ function Login() {
               )}
               <div className="form-control">
                 <label
-                  htmlFor="email"
+                  htmlFor="UserEmail"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Email:
                 </label>
                 <Field
                   type="email"
-                  id="email"
-                  name="email"
+                  id="UserEmail"
+                  name="UserEmail"
                   placeholder="Email"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 />
                 <ErrorMessage
-                  name="email"
+                  name="UserEmail"
                   component="div"
                   className="text-red-500"
                 />
               </div>
               <div className="form-control">
                 <label
-                  htmlFor="password"
+                  htmlFor="Password"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Password:
                 </label>
                 <Field
                   type="password"
-                  id="password"
-                  name="password"
+                  id="Password"
+                  name="Password"
                   placeholder="Password"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 />
                 <ErrorMessage
-                  name="password"
+                  name="Password"
                   component="div"
                   className="text-red-500"
                 />

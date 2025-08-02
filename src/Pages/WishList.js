@@ -1,6 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
 import { removeItemFromWishlist } from "../Features/userSlice";
-import { toast } from "react-toastify";
 import { addItem } from "../Features/userSlice";
 
 const WishlistPage = () => {
@@ -11,11 +10,17 @@ const WishlistPage = () => {
     dispatch(removeItemFromWishlist(itemId));
   };
 
-  
-    const handleAddToCart = (item) => {
-      dispatch(addItem(item)); 
-    };
-  
+  const handleAddToCart = (product) => {
+    dispatch(
+      addItem({
+        productId: product.Id,
+        ProductName: product.ProductName,
+        Price: product.offerPrize || product.ProductPrice,
+        OrginalPrize: product.ProductPrice,
+        ProductImage: product.ImageUrl,
+      })
+    );
+  };
   return (
     <div className="min-h-screen p-8 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -46,12 +51,12 @@ const WishlistPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {wishlistItems.map((item) => (
               <div
-                key={item.id}
+                key={item.Id}
                 className="relative group bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300 ease-in-out"
               >
                 <div className="absolute top-4 right-4 z-10">
                   <button
-                    onClick={() => handleRemoveFromWishlist(item.id)}
+                    onClick={() => handleRemoveFromWishlist(item.Id)}
                     className="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-pink-50 transition-colors duration-200"
                   >
                     <svg
@@ -71,19 +76,19 @@ const WishlistPage = () => {
 
                 <div className="overflow-hidden rounded-t-3xl">
                   <img
-                    src={item.image}
-                    alt={item.name}
+                    src={item.ImageUrl}
+                    alt={item.ProductName}
                     className="w-full h-64 object-cover transform transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
 
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    {item.name}
+                    {item.ProductName}
                   </h3>
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-rose-600">
-                      ₹{item.price}
+                      ₹{item.ProductPrice || item.OfferPrize}
                     </span>
                     {/* <button  className="flex items-center space-x-2 px-4 py-2 bg-rose-600 hover:bg-rose-600 text-white rounded-lg transition-colors duration-200"> */}
                     <button

@@ -7,9 +7,9 @@ import {
   setCart,
   fetchCartData,
   removeItem,
-  clearCart,
-  increaseQuantity,
-  decreaseQuantity,
+  increaseQuantityAsync,
+  decreaseQuantityAsync,
+  clearCartAsync,
 } from "../Features/userSlice";
 
 const CartPage = () => {
@@ -18,20 +18,25 @@ const CartPage = () => {
   const cart = useSelector((state) => state.cart.cartItems) || [];
   const userId = useSelector((state) => state.cart.userId);
 
-  // Load cart data from backend & localStorage
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
     if (isLoggedIn) {
+      // Load cart data from localStorage
       const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
       dispatch(setCart(storedCart));
 
-      if (userId) {
+      // Fetch cart data from the backend if userId exists
+      if (userId && !cart.length) {
+        // Only fetch if cart is empty (or new data is needed)
         dispatch(fetchCartData(userId));
       }
     } else {
-      dispatch(setCart([]));
+      dispatch(setCart([])); // Clear cart if not logged in
     }
-  }, [dispatch, userId]);
+  }, [dispatch, userId, cart.length]); // Add cart.length to avoid redundant fetches
+
+  console.log(cart); // To check the cart data in console
 
   const handleCheckout = () => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -64,25 +69,28 @@ const CartPage = () => {
     <div className="cart-page p-6 bg-gray-100 min-h-screen">
       <h1 className="text-4xl font-extrabold  mb-6 text-rose-600">Your Cart</h1>
       <div className="cart-items">
+        {console.log(cart)}
         {cart.map((item) => (
           <div
-            key={item.id}
+            key={item.productId}
             className="cart-item flex items-center justify-between bg-white p-4 shadow rounded mb-4"
           >
             <div className="cart-item-info flex items-center">
               <img
-                src={item.image}
-                alt={item.name}
+                src={item.ProductImage}
+                alt={item.ProductName}
                 className="w-20 h-20 object-cover mr-4 rounded"
               />
               <div>
-                <h2 className="text-xl font-semibold">{item.name}</h2>
-                <p className="text-gray-600">₹{item.price}</p>
+                <h2 className="text-xl font-semibold">{item.ProductName}</h2>
+                <p className="text-gray-600">
+                  ₹{item.Price || item.OrginalPrize}
+                </p>
               </div>
             </div>
             <div className="cart-item-controls flex items-center space-x-4">
               <button
-                onClick={() => dispatch(decreaseQuantity(item.id))}
+                onClick={() => dispatch(decreaseQuantityAsync(item.productId))}
                 className="bg-gray-200 text-gray-800 px-3 py-1 rounded"
                 disabled={item.quantity <= 1}
               >
@@ -90,13 +98,17 @@ const CartPage = () => {
               </button>
               <span className="text-lg font-semibold">{item.quantity}</span>
               <button
-                onClick={() => dispatch(increaseQuantity(item.id))}
+                onClick={() => dispatch(increaseQuantityAsync(item.productId))}
                 className="bg-gray-200 text-gray-800 px-3 py-1 rounded"
               >
                 +
               </button>
               <button
-                onClick={() => dispatch(removeItem(item.id))}
+                onClick={() => {
+                  console.log("Removing product with id:", item.productId);
+
+                  dispatch(removeItem(item.productId));
+                }}
                 className="bg-red-500 text-white px-4 py-2 rounded"
               >
                 Remove
@@ -106,13 +118,22 @@ const CartPage = () => {
         ))}
       </div>
       <div className="cart-total mt-6 bg-white p-4 shadow rounded">
+        {/* <h3 className="text-xl font-semibold">
+          Total: ₹
+          {cart.reduce((acc, item) => acc + item.Price||item.OrginalPrize * item.quantity, 0)}
+        </h3> */}
         <h3 className="text-xl font-semibold">
           Total: ₹
-          {cart.reduce((acc, item) => acc + item.price * item.quantity, 0)}
+          {cart.reduce(
+            (acc, item) =>
+              acc + (item.Price || item.OrginalPrize) * item.quantity,
+            0
+          )}
         </h3>
+
         <div className="cart-actions mt-4 flex space-x-4">
           <button
-            onClick={() => dispatch(clearCart())}
+            onClick={() => dispatch(clearCartAsync(userId))}
             className="bg-gray-500 text-white px-4 py-2 rounded"
           >
             Clear Cart

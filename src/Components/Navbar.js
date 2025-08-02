@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart, setWishlist } from "../Features/userSlice";
+import axios from "axios";
 
 function Navbar() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -73,22 +74,65 @@ function Navbar() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3001/product")
-      .then((response) => response.json())
-      .then((data) => {
-        setProducts(data);
-      })
-      .catch((error) => console.error("Error fetching products:", error));
+    const fetchProducts = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No authentication token found.");
+          return;
+        }
+  
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+  
+        // const response = await axios.get("https://localhost:7055/AllProducts", config);
+        const response = await axios.get("https://localhost:7055/All%20Products", config);
+        setProducts(response.data.data); // Assuming the data is under `data`
+        setFilteredProducts(response.data.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+  
+    fetchProducts();
   }, []);
 
-  const searchProduct = (e) => {
+  const searchProduct = async (e) => {
     const value = e.target.value.toLowerCase();
     setSearch(value);
-    const searched = products.filter((item) =>
-      item.name.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredProducts(searched);
+  
+    if (value === "") {
+      setFilteredProducts(products);
+      return;
+    }
+  
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No authentication token found.");
+        return;
+      }
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      const response = await axios.get(
+        `https://localhost:7055/Search-item?search=${value}`,
+        config
+      );
+      console.log("Search result:", response);
+      setFilteredProducts(response.data.Data); // Adjust based on your response shape
+    } catch (error) {
+      console.error("Error searching products:", error);
+    }
   };
+  
 
   return (
     <header className="bg-rose-600 text-white p-4  z-30 sticky top-0">
@@ -110,15 +154,15 @@ function Navbar() {
 
         {search && (
           <div className="absolute top-16 bg-white text-black border rounded-md shadow-lg w-96 ml-64 p-4 z-50 max-h-60 overflow-y-auto">
-            {filteredProducts.length > 0 ? (
+            {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
                 <Link
-                  to={`/product/${product.id}`}
-                  key={product.id}
+                  to={`/product/${product.Id}`}
+                  key={product.Id}
                   onClick={() => setSearch("")}
                   className="block p-2 hover:bg-gray-100 transition duration-200"
                 >
-                  {product.name}
+                  {product.ProductName}
                 </Link>
               ))
             ) : (

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 
 // Define your local image paths
 const imagePaths = [
-  "/images/baby-product-1.jpg",
-  "/images/baby-product-2.jpg",
+  "/images/baby-product-6.jpg",
+  "/images/baby-product-7.jpg",
   "/images/baby-product-3.jpg",
   "/images/baby-product-4.jpg",
-  "https://bornbabies.com/cdn/shop/files/feeding_bottle_banner_0271b574-5e11-4c17-88ef-94856835c585.jpg?v=1725882312&width=1100",
+  "/images/baby-product-5.jpg",
 ];
 
 export function CarouselCustomNavigation() {

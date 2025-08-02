@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchProducts,
+  fetchCategories,
   addProduct,
   editProduct,
   deleteProduct,
@@ -22,15 +23,21 @@ const AdminProductManagement = () => {
     name: "",
     category: "",
     price: "",
+    offerPrize: "", // Add this field for OfferPrize
     image: "",
     description: "",
   });
   const [editingProduct, setEditingProduct] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  // console.log(editingProduct);
 
   useEffect(() => {
     dispatch(fetchProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
   }, [dispatch]);
 
   const handleCategoryChange = (e) => {
@@ -40,7 +47,10 @@ const AdminProductManagement = () => {
 
   const filteredProducts = selectedCategory
     ? products.filter(
-        (product) => product.category.trim().toLowerCase() === selectedCategory
+        (product) =>
+          product.CategoryName &&
+          product.CategoryName.trim().toLowerCase() ===
+            selectedCategory.trim().toLowerCase()
       )
     : products;
 
@@ -49,51 +59,99 @@ const AdminProductManagement = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     if (editingProduct) {
-      setEditingProduct({ ...editingProduct, [name]: value });
+      setEditingProduct((prev) => ({ ...prev, [name]: value }));
     } else {
-      setNewProduct({ ...newProduct, [name]: value });
+      setNewProduct((prev) => ({ ...prev, [name]: value }));
     }
   };
 
   const handleAddProductSubmit = async (e) => {
     e.preventDefault();
-    dispatch(addProduct(newProduct))
+
+    // Create FormData
+    const formData = new FormData();
+    formData.append("ProductName", newProduct.name);
+    formData.append("ProductDescription", newProduct.description);
+    formData.append("Rating", newProduct.rating);
+    formData.append("ProductPrice", newProduct.price);
+    formData.append("OfferPrize", newProduct.offerPrize);
+    formData.append("CategoryId", newProduct.categoryId);
+    formData.append("image", newProduct.imageFile); // 👈 must be File object
+
+    console.log("FormData to be sent:", formData);
+
+    // Dispatch the Redux action with formData
+    dispatch(addProduct(formData))
       .unwrap()
       .then((product) => {
-        toast.success(`Product "${product.name}" added successfully!`);
+        console.log("Showwwwwwww", product);
+        toast.success(`Product added successfully!`);
         setIsAddProductFormVisible(false);
         setNewProduct({
           name: "",
-          category: "",
-          price: "",
-          image: "",
           description: "",
+          rating: "",
+          price: "",
+          offerPrice: "",
+          categoryId: "",
+          imageFile: null,
         });
       })
-      .catch(() => toast.error("Failed to add product."));
+      .catch((error) => {
+        toast.error("Failed to add product.");
+        console.error("Add product error:", error);
+      });
   };
 
   const handleEditProductSubmit = async (e) => {
     e.preventDefault();
-    dispatch(editProduct(editingProduct))
-      .unwrap()
-      .then((product) => {
-        toast.success(`Product "${product.name}" updated successfully!`);
-        setEditingProduct(null);
-      })
-      .catch(() => toast.error("Failed to update product."));
+    if (!editingProduct?.Id) {
+      toast.error("Missing product ID. Cannot update.");
+      return;
+    }
+
+    try {
+      // Dispatch the action with the updated product
+      const updatedProduct = await dispatch(
+        editProduct(editingProduct)
+      ).unwrap();
+      console.log(updatedProduct);
+      // Show success toast
+      toast.success(`Product updated successfully!`);
+
+      // Clear the editing state
+      setEditingProduct(null);
+    } catch (error) {
+      // Handle error case
+      toast.error("Failed to update product.");
+    }
   };
 
-  const handleDeleteProduct = (id, category) => {
-    dispatch(deleteProduct({ id, category }))
+  const handleDeleteProduct = (id) => {
+    dispatch(deleteProduct({ id }))
       .unwrap()
-      .then(() => toast.success("Product deleted successfully!"))
+      .then(() => {
+        toast.success("Product deleted successfully!");
+        window.location.reload(); // Trigger page reload
+      })
       .catch(() => toast.error("Failed to delete product."));
   };
 
   const handleEditClick = (product) => {
-    setEditingProduct(product);
+    setEditingProduct({
+      Id: product.Id,
+      name: product.ProductName,
+      description: product.ProductDescription,
+      rating: product.Rating,
+      price: product.ProductPrice,
+      offerPrize: product.OfferPrize,
+      categoryId: product.CategoryId,
+      imageFile: null, // initially null
+      ImageUrl: product.imageUrl, // for preview
+    });
+    console.log("Editing product ID:", product.Id);
     setIsAddProductFormVisible(false); // Hide Add Product form if open
 
     setTimeout(() => {
@@ -148,6 +206,7 @@ const AdminProductManagement = () => {
 
       {/* Error Display */}
       {error && <p className="text-red-500 mb-4">{error}</p>}
+
       {/* Category Filter */}
       <div className="flex justify-end mb-6">
         <select
@@ -156,11 +215,13 @@ const AdminProductManagement = () => {
           className="p-3 bg-white text-rose-600 border border-rose-400 rounded-full shadow-md focus:ring-2 focus:ring-rose-500 focus:outline-none transition duration-300"
         >
           <option value="">All Categories</option>
-          {categories.map((category, index) => (
-            <option key={index} value={category}>
-              {category.charAt(0).toUpperCase() + category.slice(1)}{" "}
-            </option>
-          ))}
+          {categories
+            .filter((category) => category) // Ensure no null/undefined categories
+            .map((category, index) => (
+              <option key={category + index} value={category}>
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </option>
+            ))}
         </select>
       </div>
 
@@ -177,13 +238,13 @@ const AdminProductManagement = () => {
             {editingProduct ? "Edit Product" : "Add New Product"}
           </h2>
 
-          {/* Name Input */}
+          {/* Product Name */}
           <div className="mb-4">
             <label
               htmlFor="name"
               className="block text-sm font-medium text-gray-700"
             >
-              Product Name
+              Product Name *
             </label>
             <input
               type="text"
@@ -191,95 +252,18 @@ const AdminProductManagement = () => {
               name="name"
               value={editingProduct ? editingProduct.name : newProduct.name}
               onChange={handleInputChange}
-              style={{
-                marginTop: "0.25rem",
-                display: "block",
-                width: "100%",
-                padding: "0.7rem 1rem",
-                border: "1px solid #D1D5DB",
-                borderRadius: "0.375rem",
-                boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.05)",
-                outline: "none",
-                transition: "box-shadow 0.2s, border-color 0.2s",
-              }}
               required
+              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none"
             />
           </div>
 
-          {/* Category Input */}
-          <div className="mb-4">
-            <label
-              htmlFor="category"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Category
-            </label>
-            <input
-              type="text"
-              id="category"
-              name="category"
-              value={
-                editingProduct ? editingProduct.category : newProduct.category
-              }
-              onChange={handleInputChange}
-              style={{
-                marginTop: "0.25rem",
-                display: "block",
-                width: "100%",
-                padding: "0.7rem 1rem",
-                border: "1px solid #D1D5DB",
-                borderRadius: "0.375rem",
-                boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.05)",
-                outline: "none",
-                transition: "box-shadow 0.2s, border-color 0.2s",
-              }}
-              required
-            />
-          </div>
-
-          {/* Price Input */}
-          <div className="mb-4">
-            <label
-              htmlFor="price"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Price
-            </label>
-            <input
-              type="number"
-              id="price"
-              name="price"
-              value={editingProduct ? editingProduct.price : newProduct.price}
-              onChange={handleInputChange}
-              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none "
-              required
-            />
-          </div>
-
-          {/* Image URL Input */}
-          <div className="mb-4">
-            <label
-              htmlFor="image"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Image URL
-            </label>
-            <input
-              type="url"
-              id="image"
-              name="image"
-              value={editingProduct ? editingProduct.image : newProduct.image}
-              onChange={handleInputChange}
-              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none "
-            />
-          </div>
-          {/* Description Input */}
+          {/* Product Description */}
           <div className="mb-4">
             <label
               htmlFor="description"
               className="block text-sm font-medium text-gray-700"
             >
-              Description
+              Product Description *
             </label>
             <textarea
               id="description"
@@ -290,11 +274,134 @@ const AdminProductManagement = () => {
                   : newProduct.description
               }
               onChange={handleInputChange}
-              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none "
+              required
+              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none"
               rows="4"
             />
           </div>
-          {/* Submit Button */}
+
+          {/* Rating */}
+          <div className="mb-4">
+            <label
+              htmlFor="rating"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Rating *
+            </label>
+            <input
+              type="number"
+              id="rating"
+              name="rating"
+              value={editingProduct ? editingProduct.rating : newProduct.rating}
+              onChange={handleInputChange}
+              required
+              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none"
+              step="0.1" // Adjust decimal places for rating
+              min="0"
+              max="5"
+            />
+          </div>
+
+          {/* Product Price */}
+          <div className="mb-4">
+            <label
+              htmlFor="price"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Product Price *
+            </label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              value={editingProduct ? editingProduct.price : newProduct.price}
+              onChange={handleInputChange}
+              required
+              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none"
+              min="0"
+            />
+          </div>
+
+          {/* Offer Price */}
+          <div className="mb-4">
+            <label
+              htmlFor="offerPrize"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Offer Prize *
+            </label>
+            <input
+              type="number"
+              id="offerPrize"
+              name="offerPrize"
+              value={
+                editingProduct
+                  ? editingProduct.offerPrize
+                  : newProduct.offerPrize
+              }
+              onChange={handleInputChange}
+              required
+              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none"
+              min="0"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="categoryId"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Category ID *
+            </label>
+            <input
+              type="number"
+              id="categoryId"
+              name="categoryId"
+              value={newProduct.categoryId}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, categoryId: e.target.value })
+              }
+              required
+              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none"
+              placeholder="Enter category ID"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="image"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Image *
+            </label>
+            {/* Show current image preview when editing */}
+            {editingProduct?.ImageUrl && (
+              <div className="mb-2">
+                <p className="text-sm text-gray-700">Current Image:</p>
+                <img
+                  src={editingProduct.ImageUrl}
+                  alt="Current"
+                  className="w-20 h-20 object-cover border rounded"
+                />
+              </div>
+            )}
+            <input
+              type="file"
+              id="image"
+              name="image"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (editingProduct) {
+                  setEditingProduct({ ...editingProduct, imageFile: file });
+                } else {
+                  setNewProduct({ ...newProduct, imageFile: file });
+                }
+              }}
+              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none"
+              required={!editingProduct}
+            />
+          </div>
+
+          {/* Submit Buttons */}
           <div className="flex justify-end space-x-4">
             <button
               type="button"
@@ -319,7 +426,7 @@ const AdminProductManagement = () => {
       <div className="space-y-6 mb-24">
         {currentProducts.map((product, index) => (
           <div
-            key={`${product.category}_${product.id}`}
+            key={`${product?.CategoryName}_${product?.Id}`}
             className="flex flex-col sm:flex-row md:flex-row items-center bg-white p-4 shadow-lg rounded-lg mb-4"
           >
             {/* Product Index */}
@@ -331,18 +438,18 @@ const AdminProductManagement = () => {
             </div>
             {/* Product Image */}
             <img
-              src={product.image}
-              alt={product.name}
+              src={product?.ImageUrl}
+              alt={product?.ProductName}
               className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-cover rounded-md border mb-4 sm:mb-0 sm:mr-4"
             />
 
             {/* Product Details */}
             <div className="flex-1 text-center sm:text-left">
-              <h3 className="text-lg font-bold">{product.name}</h3>
-              <p className="text-gray-600">Category: {product.category}</p>
-              <p className="text-gray-500">{product.description}</p>
+              <h3 className="text-lg font-bold">{product?.ProductName}</h3>
+              <p className="text-gray-600">Category: {product?.CategoryName}</p>
+              <p className="text-gray-500">{product?.ProductDescription}</p>
               <p className="text-gray-800 font-semibold">
-                Price: ₹{product.price}
+                Price: ₹{product?.OfferPrize || product?.ProductPrice}
               </p>
             </div>
             {/* Edit and Delete Buttons */}
@@ -355,7 +462,7 @@ const AdminProductManagement = () => {
               </button>
               <button
                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                onClick={() => handleDeleteClick(product.id, product.category)} // Handle deletion
+                onClick={() => handleDeleteClick(product.Id, product.category)} // Handle deletion
               >
                 Delete
               </button>

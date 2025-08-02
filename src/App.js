@@ -16,7 +16,7 @@ import OrderConfirmation from './Pages/OrderConfirmation';
 import ProductDetail from './Pages/ProductDetail';
 import MyOrder from './Pages/MyOrder';
 import Footer from './Components/Footer';
-import Admin from './Admin/Admin';
+import AdminLayout from './Admin/Admin';
 import UserSection from './Admin/UserSection'
 import ProductSection from './Admin/ProductSection'
 import Dashboard from './Admin/Dashboard';
@@ -54,7 +54,7 @@ function App() {
         <Route path="/order-confirmation" element={<OrderConfirmation/>} /> 
         <Route path="/my-orders" element={<MyOrder/>} /> 
          {/* Admin Routes (wrapped inside AdminLayout) */}
-         <Route path="/admin/*" element={<ProtectedRoute component={Admin} />}>
+         <Route path="/admin/*" element={<ProtectedRoute component={AdminLayout} />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="user-section" element={<UserSection />} />
             <Route path="product-section" element={<ProductSection />} />

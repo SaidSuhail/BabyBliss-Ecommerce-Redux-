@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import TestError from "./TestError";
 import { Link } from "react-router-dom";
-
+import { toast } from "react-toastify";
 const initialValues = {
   name: "",
   email: "",
@@ -23,40 +23,27 @@ function Registration() {
 
   const onSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
-      // Fetch existing users by email and name
-      const response = await axios.get("http://localhost:3001/users");
-      const existingUserEmail = response.data.find((user) => user.email === values.email);
-      const existingUserName = response.data.find((user) => user.name === values.name);
-
-      if (existingUserEmail) {
-        // If email already exists, show error
-        setFieldError("email", "This email is already registered.");
-        return;
-      }
-
-      if (existingUserName) {
-        // If username already exists, show error
-        setFieldError("name", "This username is already taken.");
-        return;
-      }
-
-      // Add additional fields (cart, orders, wishlist) to the user data
-      const newUser = {
-        ...values,
-        cart: [], 
-        orders: [],
-        wishlist: [], 
+      const Payload = {
+        UserName: values.name,
+        UserEmail: values.email,
+        Password: values.password,
       };
-
-      // Register new user
-      const createUserResponse = await axios.post("http://localhost:3001/users", newUser);
-      const userId = createUserResponse.data.id; 
-      console.log(userId)
-      alert("Registration successful!");
+      await axios.post("https://localhost:7055/api/Auth/Register",Payload);
+      toast.success("Registration successfull");
       navigate("/login"); 
-    } catch (error) {
-      console.error("Error during registration:", error);
-      alert("An error occurred. Please try again.");
+
+  } catch (error) {
+    console.error("Error during registration:", error.response?.data || error.message);
+    if (error.response && error.response.status === 400) {
+      const errors = error.response.data.errors;
+      if (errors?.UserName) setFieldError("name", errors.UserName[0]);
+      if (errors?.UserEmail) setFieldError("email", errors.UserEmail[0]);
+      if (errors?.Password) setFieldError("password", errors.Password[0]);
+      toast.error("Registration failed!");
+    
+    }else {
+      toast.error("An error occurred. Please try again.");
+    }
     } finally {
       setSubmitting(false);
     }

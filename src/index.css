@@ -24,3 +24,22 @@
     right: 360px !important;
     top: -440px !important;
   }
+
+  /* Using more specific selectors */
+.shipping-details .form-input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.2s ease;
+}
+
+.shipping-details .form-input:focus {
+  border-color: #3b82f6; /* Blue border on focus */
+  outline: none;
+}

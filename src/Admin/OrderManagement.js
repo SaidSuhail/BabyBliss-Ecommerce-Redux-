@@ -1,191 +1,354 @@
+
+
+// import React, { useEffect, useState } from "react";
+// import { useDispatch, useSelector } from 'react-redux';
+// import { fetchDashboardData, fetchOrdersAll, updateOrderStatus } from "../Features/adminSlice";
+// import { CurrencyIcon, UserIcon } from "lucide-react";
+
+// function OrderManagement() {
+//   const dispatch = useDispatch();
+//   const orders = useSelector((state) => state.admin.orders);
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const ordersPerPage = 6;
+
+//   // Fetch orders when the component mounts
+//   useEffect(() => {
+//     dispatch(fetchOrdersAll());
+//   }, [dispatch]);
+
+  
+//   const handleStatusChange = (orderId) => {
+//     dispatch(updateOrderStatus({ orderId }))
+//       .unwrap()
+//       .then((res) => {
+//         dispatch(fetchDashboardData()); // ✅ This will refresh dashboard data
+//         console.log("Order updated successfully:", res);
+//         dispatch(fetchOrdersAll()); // or adjust state locally
+//         dispatch(updateOrderStatus(res));  // Update the order in Redux
+
+//       })
+//       .catch((err) => {
+//         console.error("Order update failed:", err);
+//       });
+//   };
+  
+
+//   // Pagination Logic
+//   const totalPages = Math.ceil(orders.length / ordersPerPage);
+//   const indexOfLastOrder = currentPage * ordersPerPage;
+//   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+//   const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+//   const handlePageChange = (page) => {
+//     if (page >= 1 && page <= totalPages) {
+//       setCurrentPage(page);
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-8">
+//       <div className="mx-auto max-w-7xl space-y-8">
+//         {/* Header Section */}
+//         <header className="space-y-2 text-center">
+//           <h1 className="text-3xl font-bold text-rose-600 drop-shadow-md sm:text-4xl md:text-5xl">
+//             Order Management
+//           </h1>
+//           <p className="text-lg text-gray-600 md:text-xl">
+//             Manage Customer Orders
+//           </p>
+//         </header>
+  
+//         {/* Orders Grid */}
+//         <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+//           {currentOrders.map((order) => (
+//             <div
+//               key={order.OrderId}
+//               className="flex flex-col justify-between rounded-xl bg-white p-4 shadow-lg transition-shadow hover:shadow-xl sm:p-6"
+//             >
+//               {/* Order Content */}
+//               <div className="space-y-3 border-b border-gray-200 pb-4">
+//                 {/* Order Header */}
+//                 <div className="flex items-start justify-between">
+//                   <div>
+//                     <h2 className="text-base font-semibold sm:text-lg">
+//                       Order #
+//                       <span className="font-mono text-gray-700">
+//                         {order.OrderId}
+//                       </span>
+//                     </h2>
+//                     <p className="mt-1 text-sm text-gray-500">
+//                       {new Date(order.OrderDate).toLocaleDateString()}
+//                     </p>
+//                   </div>
+//                   <span className="inline-flex items-center rounded-full bg-rose-100 px-3 py-1 text-sm font-medium text-rose-800">
+//                     {order.OrderStatus}
+//                   </span>
+//                 </div>
+  
+//                 {/* Customer Info */}
+//                 <div className="space-y-2">
+//                   <div className="flex items-center gap-2 text-sm text-gray-600">
+//                     <UserIcon className="h-4 w-4 flex-shrink-0" />
+//                     <span>{order.UserName || "Unknown Customer"}</span>
+//                   </div>
+//                   <div className="flex items-center gap-2 text-sm text-gray-600">
+//                     <CurrencyIcon className="h-4 w-4 flex-shrink-0" />
+//                     <span>₹{order.TotalPrice.toLocaleString()}</span>
+//                   </div>
+//                 </div>
+//               </div>
+  
+//               {/* Actions */}
+//               <div className="pt-4">
+//                 <button
+//                   onClick={() => handleStatusChange(order.OrderId)}
+//                   className="w-full rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600 sm:text-base"
+//                 >
+//                   Mark as Delivered
+//                 </button>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+  
+//         {/* Pagination */}
+//         <div className="flex flex-wrap items-center justify-center gap-2">
+//           <button
+//             onClick={() => handlePageChange(currentPage - 1)}
+//             disabled={currentPage === 1}
+//             className="rounded bg-gray-200 px-3 py-1 text-sm transition-colors hover:bg-gray-300 disabled:opacity-50"
+//           >
+//             Previous
+//           </button>
+//           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+//             <button
+//               key={page}
+//               onClick={() => handlePageChange(page)}
+//               className={`rounded px-3 py-1 text-sm ${
+//                 currentPage === page
+//                   ? "bg-rose-500 text-white"
+//                   : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+//               }`}
+//             >
+//               {page}
+//             </button>
+//           ))}
+//           <button
+//             onClick={() => handlePageChange(currentPage + 1)}
+//             disabled={currentPage === totalPages}
+//             className="rounded bg-gray-200 px-3 py-1 text-sm transition-colors hover:bg-gray-300 disabled:opacity-50"
+//           >
+//             Next
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   )}
+
+// export default OrderManagement;
+
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { CurrencyIcon, UserIcon } from "lucide-react";
+import axios from "axios"; // You can use axios or fetch
+import { fetchDashboardData,updateOrderStatus,fetchOrdersAll } from "../Features/adminSlice";
+import { useDispatch } from "react-redux";
 
 function OrderManagement() {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([]); // Default to empty array
+  const [totalOrders, setTotalOrders] = useState(0); // Total number of orders
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 6;
-  const [selectedStatus, setSelectedStatus] = useState({});
-  const API_URL = "http://localhost:3001/orders";
+  const dispatch = useDispatch();
 
+  
+  // Fetch orders when the component mounts
+  useEffect(() => {
+    dispatch(fetchOrdersAll());
+  }, [dispatch]);
+  // Fetch orders when the component mounts or when the page changes
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(API_URL);
-        setOrders(response.data);
+        const response = await axios.get(
+          `https://localhost:7055/api/Order/paginated-orders`, {
+            params: {
+              pageNumber: currentPage,
+              pageSize: ordersPerPage
+            }
+          });
+          console.log("API Response:", response.data); // Check the response structure
+  
+        // Ensure the Items array exists in the response and is not empty
+        if (response.data.Items && Array.isArray(response.data.Items)) {
+          // Update orders with the new data
+          setOrders(response.data.Items);
+  
+          // Update totalOrders from response data
+          setTotalOrders(response.data.TotalCount);
+  
+          // Update the order statuses if you are handling them individually
+          const updatedOrders = response.data.Items.map(order => {
+            // Example of updating the order status (adjust the logic as needed)
+            if (order.OrderStatus === "Pending") {
+              // Example logic, update status as needed
+              return { ...order, OrderStatus: "Delivered" };
+            }
+            return order;
+          });
+  
+          // Update state with new order statuses
+          setOrders(updatedOrders);
+        } else {
+          console.error("Unexpected API response structure: Items not found or not an array");
+        }
       } catch (error) {
-        console.error("Error fetching orders:", error);
+        console.error("Failed to fetch orders:", error);
       }
     };
+  
     fetchOrders();
-  }, []);
-
-  const handleCheckboxChange = (orderId, status) => {
-    setSelectedStatus((prev) => ({
-      ...prev,
-      [orderId]: status,
-    }));
-  };
-
-  const handleStatusUpdate = async (orderId) => {
-    const newStatus = selectedStatus[orderId];
-    if (!newStatus) return;
-
-    try {
-      await axios.patch(`${API_URL}/${orderId}`, { status: newStatus });
-      const updatedOrders = orders.map((order) =>
-        order.id === orderId ? { ...order, status: newStatus } : order
-      );
-      setOrders(updatedOrders);
-      setSelectedStatus((prev) => ({ ...prev, [orderId]: null }));
-    } catch (error) {
-      console.error("Error updating order status:", error);
-    }
-  };
+  }, [currentPage]); // Rerun this effect when currentPage changes
+  
+  
   // Pagination Logic
-  const totalPages = Math.ceil(orders.length / ordersPerPage);
-  const indexOfLastOrder = currentPage * ordersPerPage;
-  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const totalPages = Math.ceil(totalOrders / ordersPerPage);
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
-  return (
-    <div className=" p-4 md:p-8 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex flex-col">
-      <div className="max-w-7xl mx-auto relative min-h-screen pb-20 ">
-        <h1 className="text-4xl md:text-5xl font-bold mb-8 text-rose-600 text-center drop-shadow-md">
-          Order Management
-          <span className="block mt-2 text-2xl md:text-3xl text-gray-600 font-medium">
-            Manage Customer Orders
-          </span>
-        </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 flex-grow mb-28">
-          {currentOrders.map((order) => (
-            <div
-              key={order.id}
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 border-l-4 border-rose-500"
-            >
-              <div className="flex flex-col md:flex-row justify-between gap-4">
-                {/* Order Details */}
-                <div className="space-y-2 flex-1">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-bold text-gray-800">
-                      Order #<span className="font-mono">{order.id}</span>
-                    </h2>
-                    <span className="px-3 py-1 rounded-full bg-rose-100 text-rose-800 text-sm font-medium">
-                      {order.status}
+  // const handleStatusChange = async (orderId) => {
+  //   try {
+  //     const res = await dispatch(updateOrderStatus({ orderId })).unwrap();
+  //     dispatch(fetchDashboardData());
+  //     console.log("Order updated successfully:", res);
+  //     dispatch(fetchOrdersAll());
+  //   } catch (err) {
+  //     console.error("Order update failed:", err);
+  //   }
+  // };
+  // const handleStatusChange = (orderId) => {
+  //   console.log("Order ID:", orderId); // Check the order ID
+  //       dispatch(updateOrderStatus({ orderId }))
+  //         .unwrap()
+  //         .then((res) => {
+  //           dispatch(fetchDashboardData()); // ✅ This will refresh dashboard data
+  //           console.log("Order updated successfully:", res);
+  //           dispatch(fetchOrdersAll()); // or adjust state locally
+  //           dispatch(updateOrderStatus(res));  // Update the order in Redux
+  //         })
+  //         .catch((err) => {
+  //           console.error("Order update failed:", err);
+  //         });
+  //     };
+  const handleStatusChange = (orderId) => {
+    console.log("Order ID:", orderId); // Check the order ID
+    if (orderId) {
+      dispatch(updateOrderStatus({ orderId }))
+        .unwrap()
+        .then((res) => {
+          dispatch(fetchDashboardData()); // ✅ This will refresh dashboard data
+          console.log("Order updated successfully:", res);
+          dispatch(fetchOrdersAll()); // or adjust state locally
+          // dispatch(updateOrderStatus(res));  // Update the order in Redux
+        })
+        .catch((err) => {
+          console.error("Order update failed:", err);
+        });
+    } else {
+      console.error("No order ID provided.");
+    }
+  };
+  
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-8">
+      <div className="mx-auto max-w-7xl space-y-8">
+        {/* Header Section */}
+        <header className="space-y-2 text-center">
+          <h1 className="text-3xl font-bold text-rose-600 drop-shadow-md sm:text-4xl md:text-5xl">
+            Order Management
+          </h1>
+          <p className="text-lg text-gray-600 md:text-xl">
+            Manage Customer Orders
+          </p>
+        </header>
+
+        {/* Orders Grid */}
+        <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.isArray(orders) && orders.length > 0 ? (
+            orders.map((order) => (
+              <div
+                key={order.OrderId}
+                className="flex flex-col justify-between rounded-xl bg-white p-4 shadow-lg transition-shadow hover:shadow-xl sm:p-6"
+              >
+                {/* Order Content */}
+                <div className="space-y-3 border-b border-gray-200 pb-4">
+                  {/* Order Header */}
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h2 className="text-base font-semibold sm:text-lg">
+                        Order #
+                        <span className="font-mono text-gray-700">
+                          {order.OrderId}
+                        </span>
+                      </h2>
+                      <p className="mt-1 text-sm text-gray-500">
+                        {new Date(order.OrderDate).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <span className="inline-flex items-center rounded-full bg-rose-100 px-3 py-1 text-sm font-medium text-rose-800">
+                      {order.OrderStatus}
                     </span>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <p className="flex items-center gap-2 text-gray-600">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
-                      {order.shippingDetails?.fullName || "Unknown Customer"}
-                    </p>
-                    <p className="flex items-center gap-2 text-gray-600">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                      {new Date(order.orderDate).toLocaleDateString()}
-                    </p>
-                    <p className="flex items-center gap-2 text-gray-600">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      ₹{order.totalAmount.toLocaleString()}
-                    </p>
+                  {/* Customer Info */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <UserIcon className="h-4 w-4 flex-shrink-0" />
+                      <span>{order.CustomerName || "Unknown Customer"}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <CurrencyIcon className="h-4 w-4 flex-shrink-0" />
+                      <span>₹{order.TotalPrice.toLocaleString()}</span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Status Controls */}
-                <div className="border-t md:border-t-0 md:border-l pt-4 md:pt-0 md:pl-4 flex flex-col gap-3">
-                  <div className="flex flex-col gap-2">
-                    {["Shipped", "Delivered", "Cancelled"].map((status) => (
-                      <button
-                        key={status}
-                        onClick={() => handleCheckboxChange(order.id, status)}
-                        className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors duration-200 ${
-                          selectedStatus[order.id] === status
-                            ? status === "Cancelled"
-                              ? "bg-red-500 text-white hover:bg-red-600"
-                              : status === "Shipped"
-                              ? "bg-amber-500 text-white hover:bg-amber-600"
-                              : status === "Delivered"
-                              ? "bg-green-500 text-white hover:bg-green-600"
-                              : "bg-amber-500 text-white hover:bg-amber-600"
-                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                        }`}
-                      >
-                        {status}
-                      </button>
-                    ))}
-                  </div>
-
+                {/* Actions */}
+                <div className="pt-4">
                   <button
-                    onClick={() => handleStatusUpdate(order.id)}
-                    className="mt-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4  w-26 h-14 rounded-lg 
-            transition-transform duration-200 hover:scale-105 active:scale-100 focus:scale-100 shadow-md"
+                    onClick={() => handleStatusChange(order.OrderId)}
+                    className="w-full rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600 sm:text-base"
                   >
-                    UpdateStatus
+                    Mark as Delivered
                   </button>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No orders available.</p>
+          )}
         </div>
-        {/* Pagination Buttons */}
-        <div className="absolute bottom-4 left-[55%] -translate-x-1/2 flex flex-wrap justify-center gap-2 bg-white p-2 rounded shadow-md z-10">
+
+        {/* Pagination */}
+        <div className="flex flex-wrap items-center justify-center gap-2">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+            className="rounded bg-gray-200 px-3 py-1 text-sm transition-colors hover:bg-gray-300 disabled:opacity-50"
           >
-            Prev
+            Previous
           </button>
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`px-3 py-1 rounded ${
+              className={`rounded px-3 py-1 text-sm ${
                 currentPage === page
                   ? "bg-rose-500 text-white"
-                  : "bg-gray-200 text-gray-800"
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
               }`}
             >
               {page}
@@ -194,7 +357,7 @@ function OrderManagement() {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+            className="rounded bg-gray-200 px-3 py-1 text-sm transition-colors hover:bg-gray-300 disabled:opacity-50"
           >
             Next
           </button>

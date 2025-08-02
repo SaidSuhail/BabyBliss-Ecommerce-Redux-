@@ -20,55 +20,58 @@ const Fashion = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/fashion")
+      .get("https://localhost:7055/All Products")
       .then((response) => {
-        setProducts(response.data);
+        console.log("Response data:", response.data); // Log the response
+        if (response.data && Array.isArray(response.data.Data)) {
+          const filtered = response.data.Data.filter(
+            (product) =>
+              product.CategoryName?.toLowerCase() === "girls" ||
+              product.CategoryName?.toLowerCase() === "boys"
+          );
 
-        // Extract unique normalized categories, ensuring category is a string
-        const uniqueCategories = Array.from(
-          new Set(
-            response.data
-              .map((product) =>
-                typeof product.category === "string"
-                  ? product.category.trim().toLowerCase()
-                  : null
-              )
-              .filter((category) => category)
-          )
-        );
-        setCategories(uniqueCategories);
+          setProducts(filtered);
+          setCategories(["Girls", "Boys"]);
 
-        setLoading(false);
+          setLoading(false);
+        }
       })
       .catch((error) => {
         setError("Error fetching products: " + error.message);
         setLoading(false);
       });
   }, []);
-
-  // Filter products based on selected category
   const filteredProducts = selectedCategory
-    ? products.filter(
-        (product) =>
-          typeof product.category === "string" &&
-          product.category.trim().toLowerCase() === selectedCategory
-      )
+    ? products.filter((product) => product.CategoryName === selectedCategory)
     : products;
 
   const handleAddToCart = (product) => {
-    dispatch(addItem(product));
+    // dispatch(addItem(product));
+    dispatch(
+      addItem({
+        productId: product.Id,
+        ProductName: product.ProductName,
+        Price: product.OfferPrize || product.ProductPrice,
+        OrginalPrize: product.ProductPrice,
+        ProductImage: product.ImageUrl,
+      })
+    );
   };
   const handleWishlistToggle = (product) => {
-    const isWishlisted = wishlist.some((item) => item.id === product.id);
+    if (!product || !product.Id) {
+      console.error("Invalid product data");
+      return;
+    }
+    const isWishlisted = wishlist.some(
+      (item) => item && item.Id === product.Id // Use 'Id' here instead of 'productId'
+    );
     if (isWishlisted) {
-      dispatch(removeItemFromWishlist(product.id));
+      dispatch(removeItemFromWishlist(product.Id)); // Use 'Id'
     } else {
-      dispatch(addItemToWishlist(product));
+      dispatch(addItemToWishlist(product)); // Pass product with 'Id'
     }
   };
-  // const handleAddToWishlist = (product) => {
-  //   dispatch(addItemToWishlist(product)); // Dispatch to add to wishlist
-  // };
+
   useEffect(() => {
     // Save wishlist to localStorage whenever it changes
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
@@ -92,7 +95,7 @@ const Fashion = () => {
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="p-3 bg-white text-rose-600 border border-rose-400 rounded-full shadow-md focus:ring-2 focus:ring-rose-500 focus:outline-none transition duration-300"
+          className="ml-4 p-3 pl-4 pr-8 bg-white text-rose-600 border border-rose-400 rounded-full shadow-md focus:ring-2 focus:ring-rose-500 focus:outline-none transition duration-300"
         >
           <option value="">All Categories</option>
           {categories.map((category, index) => (
@@ -108,22 +111,22 @@ const Fashion = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((product) => (
           <div
-            key={product.id}
+            key={product.Id}
             className="bg-white shadow-md rounded-lg p-4 hover:shadow-xl transition duration-300 relative"
           >
-            <Link to={`/fashion/${product.id}`} className="block">
+            <Link to={`/fashion/${product.Id}`} className="block">
               <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105">
                 <img
-                  src={product.image}
-                  alt={product.name}
+                  src={product.ImageUrl}
+                  alt={product.ProductName}
                   className="w-full h-48 object-cover rounded-t-lg"
                 />
                 <div className="p-4">
                   <h2 className="text-xl font-semibold text-gray-800 truncate">
-                    {product.name}
+                    {product.ProductName}
                   </h2>
                   <p className="text-rose-600 font-bold mt-2">
-                    ₹{product.price}
+                    ₹{product.OfferPrize || product.ProductPrice}
                   </p>
                 </div>
               </div>
@@ -135,18 +138,19 @@ const Fashion = () => {
             >
               Add To Cart
             </button>
+
             <button
               className={`absolute top-80 right-3 p-2 rounded-full shadow-md transition 
-    ${
-      wishlist.some((item) => item.id === product.id)
-        ? "bg-rose-500 text-white"
-        : "bg-white text-rose-500 hover:bg-rose-100"
-    }`}
-              onClick={() => handleWishlistToggle(product)}
+              ${
+                wishlist.some((item) => item && item.Id === product.Id) // Use 'Id' here as well
+                  ? "bg-rose-600 text-white"
+                  : "bg-white text-rose-500 hover:bg-rose-100"
+              }`}
+              onClick={() => handleWishlistToggle(product)} // Make sure you're passing the correct product object
             >
               <Heart
                 className={`transition duration-300 ${
-                  wishlist.some((item) => item.id === product.id)
+                  wishlist.some((item) => item && item.Id === product.Id) // Use 'Id' for checking
                     ? "fill-white"
                     : "hover:fill-rose-500"
                 }`}
